@@ -1,0 +1,55 @@
+<div class="login-container">
+    <div class="login-header">
+        <h2>تسجيل الدخول</h2>
+        <p>
+            أدخل بياناتك للوصول إلى حسابك
+        </p>
+    </div>
+
+    <div id="phone-login">
+        <div class="form-group">
+            <label for="phone">رقم الجوال</label>
+            <input type="tel" id="phone" class="form-control" placeholder="+9665XXXXXXXX" required>
+        </div>
+
+        <div id="recaptcha-container"></div>
+
+        <button id="send-otp-btn" class="btn">إرسال رمز التحقق</button>
+
+        <div id="otp-section" class="hidden">
+            <div class="form-group">
+                <label for="otp">رمز التحقق</label>
+                <input type="text" id="otp" class="form-control" placeholder="أدخل الرمز المكون من 6 أرقام" required maxlength="6">
+            </div>
+            <button id="verify-otp-btn" class="btn">تحقق</button>
+
+            <div id="resend-timer" class="resend-link hidden">
+                إعادة الإرسال متاحة بعد 60 ثانية
+            </div>
+            <div id="resend-link" class="resend-link hidden">
+                إعادة إرسال الرمز
+            </div>
+        </div>
+
+        <div class="login-footer">
+            أو<a href="javascript:void(0)" id="email-login-link">تسجيل الدخول بالبريد الإلكتروني</a>
+        </div>
+    </div>
+
+    <div id="email-login" class="hidden">
+        <div class="form-group">
+            <label for="email">البريد الإلكتروني</label>
+            <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password">كلمة المرور</label>
+            <input type="password" id="password" class="form-control" required>
+        </div>
+        <button id="login-btn" class="btn">تسجيل الدخول</button>
+
+        <div class="login-footer">
+            ليس لديك حساب؟ <a href="#register">سجل الآن</a> أو
+            <a href="javascript:void(0)" id="phone-login-link">تسجيل الدخول برقم الجوال</a>
+        </div>
+    </div>
+</div>

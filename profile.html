@@ -1,0 +1,35 @@
+<div class="settings-container">
+    <div class="settings-header">
+        <h2>الملف الشخصي</h2>
+    </div>
+
+    <div class="profile-picture">
+        <img id="profile-img" src="/assets/default-profile.jpg">
+        <input type="file" id="profile-upload">
+    </div>
+
+    <div class="form-group">
+        <label for="display-name">اسم المستخدم</label>
+        <input type="text" id="display-name">
+    </div>
+
+    <button id="save-profile" class="btn">حفظ التغييرات</button>
+</div>
+<div class="profile-picture">
+  <img id="profile-img" src="/assets/default-profile.jpg">
+  <label for="profile-upload" class="upload-btn">
+    <i class="fas fa-camera"></i>
+  </label>
+  <input type="file" id="profile-upload" accept="image/*" hidden>
+</div>
+
+<script>
+document.getElementById('profile-upload').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const url = await ChatService.uploadMedia(file);
+    await AuthService.updateProfile(null, url);
+    document.getElementById('profile-img').src = url;
+  }
+});
+</script>

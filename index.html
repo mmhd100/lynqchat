@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LynqChat - تطبيق الدردشة الآمن</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+    <script src="https://cdn.jsdelivr.net/npm/libphonenumber-js@1.10.25/bundle/libphonenumber-js.min.js"></script>
+</head>
+<body>
+    <!-- شاشة الترحيب -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="logo">
+                <span class="logo-icon">LC</span>
+                <span>LynqChat</span>
+            </div>
+            <h1>مرحبًا بك في LynqChat</h1>
+            <p>
+                تطبيق الدردشة الآمنة من طرف إلى طرف
+            </p>
+
+            <div class="auth-buttons">
+                <a href="#login" class="btn btn-primary">تسجيل الدخول</a>
+                <a href="#register" class="btn btn-outline">إنشاء حساب</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- عنصر الإشعارات -->
+    <div id="notifications-container"></div>
+    
+    <div id="app"></div>
+    
+    <!-- الهيكل الرئيسي للتطبيق -->
+    <div class="app-layout" id="appLayout">
+        <!-- الشريط الجانبي -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="logo-icon">LC</span>
+                    <span>LynqChat</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>المحادثات</h3>
+                <a href="#chat" class="sidebar-item">
+                    <i class="icon icon-message"></i>
+                    <span>الدردشة العامة</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>الحساب</h3>
+                <a href="#settings" class="sidebar-item">
+                    <i class="icon icon-settings"></i>
+                    <span>الإعدادات</span>
+                </a>
+                <a href="#profile" class="sidebar-item">
+                    <i class="icon icon-user"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>الاتصالات</h3>
+                <a href="#contacts" class="sidebar-item">
+                    <i class="icon icon-user-plus"></i>
+                    <span>جهات الاتصال</span>
+                </a>
+                <a href="#media" class="sidebar-item">
+                    <i class="icon icon-image"></i>
+                    <span>الوسائط</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>المساعدة</h3>
+                <a href="#notifications" class="sidebar-item">
+                    <i class="icon icon-bell"></i>
+                    <span>الإشعارات</span>
+                </a>
+                <a href="#privacy" class="sidebar-item">
+                    <i class="icon icon-shield"></i>
+                    <span>الخصوصية</span>
+                </a>
+                <a href="#about" class="sidebar-item">
+                    <i class="icon icon-info"></i>
+                    <span>حول التطبيق</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                © 2023 LynqChat. جميع الحقوق محفوظة
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content" id="app">
+            <!-- سيتم تحميل المحتوى الديناميكي هنا -->
+        </div>
+    </div>
+
+    <script type="module" src="/assets/js/firebase-init.js"></script>
+    <script type="module" src="/assets/js/utils.js"></script>
+    <script type="module" src="/assets/js/auth.js"></script>
+    <script type="module" src="/assets/js/chat.js"></script>
+    <script type="module" src="/assets/js/contacts.js"></script>
+    <script type="module" src="/assets/js/encryption.js"></script>
+    <script type="module" src="/assets/js/app.js"></script>
+</body>
+</html>

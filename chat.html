@@ -1,0 +1,114 @@
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="chat-info">
+            <div class="chat-title">
+                <i class="icon icon-message"></i>
+                <span>LynqChat</span>
+            </div>
+            <div class="chat-status" id="chat-status">
+                <!-- سيتم عرض حالة الاتصال هنا -->
+            </div>
+        </div>
+        <div class="chat-actions">
+            <button id="media-btn" class="chat-btn" title="إرسال وسائط">
+                <i class="icon icon-image"></i>
+            </button>
+            <button id="search-btn" class="chat-btn" title="بحث في المحادثة">
+                <i class="icon icon-search"></i>
+            </button>
+            <button id="settings-btn" class="chat-btn" title="الإعدادات">
+                <i class="icon icon-settings"></i>
+            </button>
+            <button id="logout-btn" class="chat-btn" title="تسجيل الخروج">
+                <i class="icon icon-logout"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="chat-messages" class="chat-messages">
+        <!-- الرسائل تظهر هنا -->
+    </div>
+
+    <div id="typing-indicator" class="typing-indicator hidden">
+        <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <span id="typing-text"></span>
+    </div>
+
+    <div class="message-input-container">
+        <button id="attach-btn" class="attach-btn" title="إرفاق ملف">
+            <i class="icon icon-paperclip"></i>
+        </button>
+        <input type="text" id="message-input" class="message-input" placeholder="اكتب رسالتك...">
+        <button id="send-btn" class="send-btn" title="إرسال">
+            <i class="icon icon-send"></i>
+        </button>
+    </div>
+<!-- إضافة معاينة الرد -->
+<div id="reply-preview" class="hidden">
+  <!-- سيتم إضافتها ديناميكيًا -->
+</div>
+    <!-- نافذة إرفاق الملفات -->
+    <div id="media-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إرسال وسائط</h3>
+                <button id="close-media-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="media-options">
+                    <button id="send-image" class="media-option">
+                        <i class="icon icon-image"></i>
+                        <span>صورة</span>
+                    </button>
+                    <button id="send-video" class="media-option">
+                        <i class="icon icon-video"></i>
+                        <span>فيديو</span>
+                    </button>
+                    <button id="send-document" class="media-option">
+                        <i class="icon icon-document"></i>
+                        <span>ملف</span>
+                    </button>
+                    <button id="send-location" class="media-option">
+                        <i class="icon icon-location"></i>
+                        <span>موقع</span>
+                    </button>
+                </div>
+                <div id="media-preview" class="media-preview hidden">
+                    <img id="preview-image" class="hidden">
+                    <video id="preview-video" class="hidden" controls></video>
+                    <div id="preview-document" class="hidden">
+                        <i class="icon icon-document"></i>
+                        <span id="document-name"></span>
+                    </div>
+                    <div class="media-actions">
+                        <button id="cancel-media" class="btn btn-outline">إلغاء</button>
+                        <button id="confirm-media" class="btn btn-primary">إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة البحث في المحادثة -->
+    <div id="search-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>بحث في المحادثة</h3>
+                <button id="close-search-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-input-container">
+                    <input type="text" id="search-input" placeholder="ابحث في الرسائل...">
+                    <button id="search-submit" class="search-btn">
+                        <i class="icon icon-search"></i>
+                    </button>
+                </div>
+                <div id="search-results" class="search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>

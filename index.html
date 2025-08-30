@@ -1419,38 +1419,41 @@
         },
 
         loadUserData: () => {
-            if (!AppState.currentUser) return;
-            
-            getDoc(doc(db, 'users', AppState.currentUser.uid))
-                .then((doc) => {
-                    if (doc.exists()) {
-                        const userData = doc.data();
-                        DOM.userName.textContent = userData.name;
-                        DOM.userAvatar.textContent = userData.name.charAt(0);
-                        
-                        // تحميل جهات الاتصال
-                        ContactService.loadContacts();
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error loading user data:', error);
-                    NotificationService.show('خطأ', 'فشل في تحميل بيانات المستخدم', 'error');
-                });
-        },
+    if (!AppState.currentUser) return;
 
-        updateStatus: (status) => {
-            if (!AppState.currentUser) return;
-            
-            // تحديث حالة المستخدم في قاعدة البيانات
-            setDoc(doc(db, 'users', AppState.currentUser.uid), {
-                status: status,
-                lastSeen: serverTimestamp()
-            }, { merge: true })
-            .catch((error) => {
-                console.error('Error updating user status:', error);
-            });
-        }
-    };
+    const userRef = doc(db, 'users', AppState.currentUser.uid);
+
+    getDoc(userRef)
+        .then(async (snapshot) => {
+            if (snapshot.exists()) {
+                // ✅ المستند موجود
+                const userData = snapshot.data();
+                DOM.userName.textContent = userData.name;
+                DOM.userAvatar.textContent = userData.name.charAt(0);
+
+                // تحميل جهات الاتصال
+                ContactService.loadContacts();
+            } else {
+                // ⚠️ المستند غير موجود → إنشاؤه
+                await setDoc(userRef, {
+                    name: AppState.currentUser.displayName || "مستخدم جديد",
+                    email: AppState.currentUser.email || "",
+                    phone: AppState.currentUser.phoneNumber || "",
+                    createdAt: serverTimestamp(),
+                    lastSeen: serverTimestamp()
+                });
+
+                DOM.userName.textContent = AppState.currentUser.displayName || "مستخدم جديد";
+                DOM.userAvatar.textContent = (AppState.currentUser.displayName || "م").charAt(0);
+
+                ContactService.loadContacts();
+            }
+        })
+        .catch((error) => {
+            console.error('Error loading user data:', error);
+            NotificationService.show('خطأ', 'فشل في تحميل بيانات المستخدم', 'error');
+        });
+},
 
     // ===== خدمة جهات الاتصال =====
     const ContactService = {

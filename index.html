@@ -308,31 +308,31 @@
             font-weight: 600;
         }
 
+       /* منطقة الدردشة */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--light-gray);
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23128c7e' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            position: relative;
+            height: 100%;
+        }
 
-    /* منطقة الدردشة */
-    .chat-area {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        background-color: var(--light-gray);
-        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23128c7e' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        position: relative;
-        height: 100%;
-    }
-
-    /* تثبيت الرأس */
-    .chat-header {
-        background-color: var(--light);
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid var(--gray);
-        display: flex;
-        align-items: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        flex-shrink: 0;
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
+        /* تثبيت الرأس بشكل محسّن */
+        .chat-header {
+            background-color: var(--light);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--gray);
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            height: 70px;
+        }
 
         .current-contact {
             display: flex;
@@ -397,19 +397,18 @@
             color: var(--primary);
         }
 
-      
-    /* منطقة الرسائل مع تمرير داخلي سلس */
-    .chat-messages {
-        flex: 1;
-        padding: 1rem;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        scroll-behavior: smooth;
-        max-height: calc(100vh - var(--header-height) - 160px);
-    }
-    
+        /* منطقة الرسائل مع تمرير داخلي سلس محسّن */
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            scroll-behavior: smooth;
+            max-height: calc(100vh - var(--header-height) - 140px);
+        }
+        
         .message {
             max-width: 70%;
             padding: 0.75rem 1rem;
@@ -454,20 +453,21 @@
             color: var(--dark-gray);
         }
 
-    /* تثبيت الإدخال */
-    .chat-input-container {
-        background-color: var(--light);
-        padding: 0.75rem 1rem;
-        display: flex;
-        align-items: center;
-        border-top: 1px solid var(--gray);
-        gap: 0.5rem;
-        flex-shrink: 0;
-        position: sticky;
-        bottom: 0;
-        z-index: 10;
-    }
-    
+        /* تثبيت الإدخال بشكل محسّن */
+        .chat-input-container {
+            background-color: var(--light);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid var(--gray);
+            gap: 0.5rem;
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+            height: 70px;
+        }
+        
         .chat-input-action {
             background: transparent;
             border: none;
@@ -1768,6 +1768,59 @@
             padding: 1rem;
             font-style: italic;
         }
+        /* إصلاح شاشة الترحيب */
+.welcome-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(18, 140, 126, 0.1), rgba(7, 94, 84, 0.1));
+    padding: 1.5rem;
+    text-align: center;
+    overflow-y: auto; /* تمكين التمرير عند صغر الشاشة */
+}
+
+/* إصلاح العناصر داخل شاشة الترحيب */
+.welcome-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    max-width: 100%;
+}
+
+/* صندوق الميزة */
+.feature {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 280px; /* ضبط الحجم في الموبايل */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+/* تحسين للشاشات الصغيرة */
+@media (max-width: 576px) {
+    .welcome-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    .welcome-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+    .welcome-text {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+    .feature {
+        max-width: 100%;
+    }
+}
     </style>
 </head>
 <body>
@@ -2247,66 +2300,66 @@
     </div>
 </div>
 
-<!-- نافذة المكالمة الجديدة -->
-<div class="call-window" id="callWindow">
+<!-- نافذة المكالمة -->
+<div class="call-window" id="callWindow" style="display: none;">
     <div class="call-header">
         <div class="call-avatar" id="callAvatar">
-            <span id="callAvatarText">م</span>
+            <span id="callAvatarText">?</span>
         </div>
-        <h2 class="caller-name" id="callerName">محمد أحمد</h2>
+        <h2 class="caller-name" id="callerName"></h2>
         <p class="call-status" id="callStatus">جاري الاتصال...</p>
         <div class="call-timer" id="callTimer">00:00</div>
     </div>
     
     <div class="call-controls">
-        <button class="call-control call-mute" id="callMute">
+        <button class="call-control call-mute" id="callMute" title="كتم/إلغاء كتم الميكروفون">
             <i class="fas fa-microphone"></i>
         </button>
-        <button class="call-control call-end" id="callEnd">
+        <button class="call-control call-end" id="callEnd" title="إنهاء المكالمة">
             <i class="fas fa-phone"></i>
         </button>
-        <button class="call-control call-video" id="callVideo">
+        <button class="call-control call-video" id="callVideo" title="تشغيل/إيقاف الفيديو">
             <i class="fas fa-video"></i>
         </button>
     </div>
     
     <div class="call-actions">
-        <button class="settings-btn settings-btn-secondary" id="callSpeaker">
+        <button class="settings-btn settings-btn-secondary" id="callSpeaker" title="تشغيل/إيقاف مكبر الصوت">
             <i class="fas fa-volume-up"></i> مكبر الصوت
         </button>
-        <button class="settings-btn settings-btn-secondary" id="callChat">
+        <button class="settings-btn settings-btn-secondary" id="callChat" title="فتح الدردشة">
             <i class="fas fa-comment"></i> فتح الدردشة
         </button>
     </div>
 </div>
 
-<!-- نافذة المكالمة الواردة الجديدة -->
-<div class="incoming-call" id="incomingCall">
+<!-- نافذة المكالمة الواردة -->
+<div class="incoming-call" id="incomingCall" style="display: none;">
     <div class="incoming-call-avatar" id="incomingCallAvatar">
-        <span id="incomingCallAvatarText">م</span>
+        <span id="incomingCallAvatarText">?</span>
     </div>
-    <h3 class="incoming-call-name" id="incomingCallName">محمد أحمد</h3>
+    <h3 class="incoming-call-name" id="incomingCallName"></h3>
     <p class="incoming-call-type" id="incomingCallType">مكالمة صوتية واردة</p>
     <div class="incoming-call-actions">
-        <button class="incoming-call-reject" id="incomingCallReject">
-            <i class="fas fa-phone"></i>
+        <button class="incoming-call-reject" id="incomingCallReject" title="رفض المكالمة">
+            <i class="fas fa-phone-slash"></i>
         </button>
-        <button class="incoming-call-accept" id="incomingCallAccept">
+        <button class="incoming-call-accept" id="incomingCallAccept" title="قبول المكالمة">
             <i class="fas fa-phone"></i>
         </button>
     </div>
 </div>
 
 <!-- منطقة الإشعارات -->
-<div class="notification" id="notification">
+<div class="notification" id="notification" style="display: none;">
     <div class="notification-icon">
         <i class="fas fa-check"></i>
     </div>
     <div class="notification-content">
-        <div class="notification-title" id="notificationTitle">تم بنجاح</div>
-        <div class="notification-message" id="notificationMessage">العملية تمت بنجاح</div>
+        <div class="notification-title" id="notificationTitle"></div>
+        <div class="notification-message" id="notificationMessage"></div>
     </div>
-    <button class="notification-close" id="notificationClose">
+    <button class="notification-close" id="notificationClose" title="إغلاق الإشعار">
         <i class="fas fa-times"></i>
     </button>
 </div>

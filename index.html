@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -3441,9 +3441,8 @@ const cleanup = () => {
             }
         }
     };
-
-    // ===== خدمة المكالمات =====
-    const CallService = {
+// ===== خدمة المكالمات =====
+const CallService = {
   localStream: null,
   peerConnection: null,
   callDocRef: null,
@@ -3451,6 +3450,7 @@ const cleanup = () => {
   calleesCandidatesCol: null,
   remoteEl: null,
   _timerInterval: null,
+  callStartTime: null,
 
   init() {
     console.log("CallService initialized");
@@ -3461,9 +3461,9 @@ const cleanup = () => {
     this.calleesCandidatesCol = null;
     this.remoteEl = null;
     this._timerInterval = null;
+    this.callStartTime = null;
   },
 
-  // إعداد STUN servers أساسي
   rtcConfig: {
     iceServers: [
       { urls: 'stun:stun.l.google.com:19302' }
@@ -3471,32 +3471,51 @@ const cleanup = () => {
   },
 
   async startCall(contactId, type = 'audio') {
-    if (!AppState.currentUser || !AppState.currentChat) return;
+    if (!AppState.currentUser || !AppState.currentChat) {
+      console.warn('startCall aborted: no current user or chat');
+      return;
+    }
+
     DOM.callWindow.style.display = 'flex';
     DOM.callerName.textContent = AppState.currentChat.name || '...';
     DOM.callAvatarText.textContent = AppState.currentChat.avatar || '?';
     DOM.callStatus.textContent = 'جاري الاتصال...';
     AppState.currentCall = { contactId, type, isInitiator: true };
 
-    // الحصول على الميديا المحلية
+    // احصل على ميديا محلية صحيحة
     try {
       this.localStream = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: type === 'video'
       });
-    } catch(e) {
+    } catch (e) {
       NotificationService.show('خطأ', 'لم يتمكن المتصفح من الوصول للميكروفون/الكاميرا: ' + e.message, 'error');
       return;
     }
 
-    // إنشاء RTCPeerConnection
+    // إنشاء PeerConnection
     this.peerConnection = new RTCPeerConnection(this.rtcConfig);
-    // ألعِب المسارات المحلية
+
+    // handlers مهمة لمراقبة الحالة
+    this.peerConnection.oniceconnectionstatechange = () => {
+      console.log('ICE state:', this.peerConnection.iceConnectionState);
+      if (['failed','disconnected','closed'].includes(this.peerConnection.iceConnectionState)) {
+        // تنظيف تلقائي عند فشل الاتصال
+        this.endCall();
+      }
+    };
+    this.peerConnection.onconnectionstatechange = () => {
+      console.log('Connection state:', this.peerConnection.connectionState);
+      if (this.peerConnection.connectionState === 'connected') {
+        DOM.callStatus.textContent = 'المكالمة متصلة';
+      }
+    };
+
+    // أضف المسارات المحلية
     this.localStream.getTracks().forEach(track => this.peerConnection.addTrack(track, this.localStream));
 
-    // مجرى للبث بعيد (يمكنك توصيله بعنصر فيديو بـ DOM)
+    // عرض الدفق البعيد
     this.peerConnection.ontrack = (event) => {
-      // في حالة الفيديو، قد يتطلب إضافة عنصر <video autoplay playsinline>
       if (!this.remoteEl) {
         this.remoteEl = document.createElement('video');
         this.remoteEl.autoplay = true;
@@ -3507,26 +3526,30 @@ const cleanup = () => {
       this.remoteEl.srcObject = event.streams[0];
     };
 
-    // إنشاء وثيقة إشارة في Firestore
+    // جهز وثيقة الإشارة في Firestore
     const callDoc = doc(collection(db, 'calls'));
     this.callDocRef = callDoc;
     const callId = callDoc.id;
 
-    // مجموعتا المرشحات (ICE candidates)
+    // احفظ مجموعات المرشحات كمراجع في this
     this.callersCandidatesCol = collection(db, 'calls', callId, 'callerCandidates');
     this.calleesCandidatesCol = collection(db, 'calls', callId, 'calleeCandidates');
 
-    // إضافة مرشحات محلية إلى Firestore
+    // أرسل ICE candidates إلى Firestore (caller)
     this.peerConnection.onicecandidate = (e) => {
       if (!e.candidate) return;
-      addDoc(this.callersCandidatesCol, JSON.parse(JSON.stringify(e.candidate)));
+      try {
+        addDoc(this.callersCandidatesCol, JSON.parse(JSON.stringify(e.candidate)));
+      } catch (err) {
+        console.warn('Failed to add caller candidate', err);
+      }
     };
 
-    // إنشاء العرض (offer)
+    // أنشئ offer وعيّنه محليًا
     const offerDesc = await this.peerConnection.createOffer();
     await this.peerConnection.setLocalDescription(offerDesc);
 
-    // حفظ العرض في Firestore
+    // حفظ العرض + نوع المكالمة
     await setDoc(callDoc, {
       offer: {
         type: offerDesc.type,
@@ -3534,55 +3557,90 @@ const cleanup = () => {
       },
       callerId: AppState.currentUser.uid,
       calleeId: contactId,
+      type: type, // مهم جداً — يخبر المستجيب إن كانت فيديو أم صوت
       createdAt: serverTimestamp()
     });
 
-    // استمع للإجابة (answer)
+    // استمع للإجابة — استخدم peerConnection.remoteDescription بشكل صحيح
     onSnapshot(callDoc, (snap) => {
       const data = snap.data();
       if (!data) return;
-      if (data.answer && !this.peerConnection.currentRemoteDescription) {
+      if (data.answer && !this.peerConnection.remoteDescription) {
         const answerDesc = { type: data.answer.type, sdp: data.answer.sdp };
-        this.peerConnection.setRemoteDescription(answerDesc);
-        DOM.callStatus.textContent = 'المكالمة متصلة';
+        this.peerConnection.setRemoteDescription(answerDesc)
+          .then(() => {
+            console.log('Remote description (answer) set successfully');
+            DOM.callStatus.textContent = 'المكالمة متصلة';
+          })
+          .catch(e => console.warn('setRemoteDescription failed', e));
       }
     });
 
-    // استمع لمرشحات المُجيب
-    onSnapshot(collection(db, 'calls', callId, 'calleeCandidates'), (snap) => {
+    // استمع لمرشحات المُجيب (callee candidates)
+    onSnapshot(this.calleesCandidatesCol, (snap) => {
       snap.docChanges().forEach(change => {
         if (change.type === 'added') {
           const cand = change.doc.data();
-          this.peerConnection.addIceCandidate(cand).catch(e => console.warn(e));
+          if (!cand) return;
+          try {
+            this.peerConnection.addIceCandidate(new RTCIceCandidate(cand)).catch(e => console.warn('addIceCandidate(callee) failed', e));
+          } catch (err) {
+            console.warn('Invalid candidate (callee):', err);
+          }
         }
       });
     });
 
-    // سجل الحالة
+    // سجّل الحالة
     AppState.currentCall = { callId, contactId, type, isInitiator: true };
     this.startCallTimer();
+    console.log('call started, id=', callId);
   },
 
-  // عند استقبال مكالمة — الطرف الثاني (المجيب) يستدعي هذا مع callId
+  // الطرف الثاني يقبل المكالمة (callee)
   async acceptCall(callId) {
-    if (!AppState.currentUser) return;
+    if (!AppState.currentUser) {
+      console.warn('acceptCall aborted: no current user');
+      return;
+    }
+
     const callDocRef = doc(db, 'calls', callId);
     const callSnap = await getDoc(callDocRef);
-    if (!callSnap.exists()) { NotificationService.show('خطأ', 'نداء غير موجود', 'error'); return; }
+    if (!callSnap.exists()) {
+      NotificationService.show('خطأ', 'نداء غير موجود', 'error');
+      return;
+    }
     const callData = callSnap.data();
 
-    // الحصول على الميديا المحلية
+    // استخدم نوع المكالمة المحفوظ
+    const remoteType = callData.type || 'audio';
+
+    // اطلب الميديا المحلية بحسب النوع
     try {
       this.localStream = await navigator.mediaDevices.getUserMedia({
         audio: true,
-        video: callData.offer && callData.offer.sdp && callData.type === 'video' // أو استخدم callData.type
+        video: remoteType === 'video'
       });
-    } catch(e) {
+    } catch (e) {
       NotificationService.show('خطأ', 'فشل الوصول إلى الميكروفون/الكاميرا: ' + e.message, 'error');
       return;
     }
 
     this.peerConnection = new RTCPeerConnection(this.rtcConfig);
+
+    this.peerConnection.oniceconnectionstatechange = () => {
+      console.log('ICE state (callee):', this.peerConnection.iceConnectionState);
+      if (['failed','disconnected','closed'].includes(this.peerConnection.iceConnectionState)) {
+        this.endCall();
+      }
+    };
+    this.peerConnection.onconnectionstatechange = () => {
+      console.log('Connection state (callee):', this.peerConnection.connectionState);
+      if (this.peerConnection.connectionState === 'connected') {
+        DOM.callStatus.textContent = 'المكالمة متصلة';
+      }
+    };
+
     this.localStream.getTracks().forEach(track => this.peerConnection.addTrack(track, this.localStream));
 
     this.peerConnection.ontrack = (event) => {
@@ -3595,18 +3653,28 @@ const cleanup = () => {
       this.remoteEl.srcObject = event.streams[0];
     };
 
-    // أرسل ICE candidates الخاصة بالمجيب إلى مجموعة 'calleeCandidates'
-    const calleeCandidatesCol = collection(db, 'calls', callId, 'calleeCandidates');
+    // إعداد مجموعة مرشحات callee وتخزينها
+    this.calleesCandidatesCol = collection(db, 'calls', callId, 'calleeCandidates');
     this.peerConnection.onicecandidate = (e) => {
       if (!e.candidate) return;
-      addDoc(calleeCandidatesCol, JSON.parse(JSON.stringify(e.candidate)));
+      try {
+        addDoc(this.calleesCandidatesCol, JSON.parse(JSON.stringify(e.candidate)));
+      } catch (err) {
+        console.warn('Failed to add callee candidate', err);
+      }
     };
 
     // ضع العرض (offer) كـ remoteDescription
     const offerDesc = { type: callData.offer.type, sdp: callData.offer.sdp };
-    await this.peerConnection.setRemoteDescription(offerDesc);
+    try {
+      await this.peerConnection.setRemoteDescription(offerDesc);
+    } catch (err) {
+      console.error('setRemoteDescription (offer) failed', err);
+      NotificationService.show('خطأ', 'فشل في إعداد العرض الوارد', 'error');
+      return;
+    }
 
-    // أنشئ إجابة (answer) و احفظها في الوثيقة
+    // أنشئ الإجابة و احفظها
     const answerDesc = await this.peerConnection.createAnswer();
     await this.peerConnection.setLocalDescription(answerDesc);
 
@@ -3617,12 +3685,18 @@ const cleanup = () => {
       }
     }, { merge: true });
 
-    // استمع لمرشحات المدعو (callerCandidates)
-    onSnapshot(collection(db, 'calls', callId, 'callerCandidates'), (snap) => {
+    // استمع لمرشحات المتصل (callerCandidates)
+    this.callersCandidatesCol = collection(db, 'calls', callId, 'callerCandidates');
+    onSnapshot(this.callersCandidatesCol, (snap) => {
       snap.docChanges().forEach(change => {
         if (change.type === 'added') {
           const cand = change.doc.data();
-          this.peerConnection.addIceCandidate(cand).catch(e => console.warn(e));
+          if (!cand) return;
+          try {
+            this.peerConnection.addIceCandidate(new RTCIceCandidate(cand)).catch(e => console.warn('addIceCandidate(caller) failed', e));
+          } catch (err) {
+            console.warn('Invalid candidate (caller):', err);
+          }
         }
       });
     });
@@ -3632,6 +3706,7 @@ const cleanup = () => {
     DOM.callStatus.textContent = 'المكالمة متصلة';
     AppState.currentCall = { callId, contactId: callData.callerId, isInitiator: false };
     this.startCallTimer();
+    console.log('call accepted, id=', callId);
   },
 
   async endCall() {
@@ -3641,28 +3716,38 @@ const cleanup = () => {
       DOM.callWindow.style.display = 'none';
       // حذف وثيقة الإشارة (اختياري) أو وضع علامة انتهت
       if (this.callDocRef) {
-        try { await deleteDoc(this.callDocRef); } catch(e) { /* قد تحتاج لتنظيف subcollections */ }
+        try {
+          await deleteDoc(this.callDocRef);
+        } catch (e) {
+          // قد تحتاج لتنظيف subcollections يدوياً في Cloud Functions أو عبر واجهة الإدارة
+          console.warn('Failed to delete callDocRef (it may have subcollections):', e);
+        }
       }
-    } catch(e) { console.warn(e); }
+    } catch (e) {
+      console.warn(e);
+    }
     this.peerConnection = null;
     this.localStream = null;
+    this.callDocRef = null;
+    this.callersCandidatesCol = null;
+    this.calleesCandidatesCol = null;
     AppState.currentCall = null;
     DOM.callTimer.style.display = 'none';
     clearInterval(this._timerInterval);
   },
 
   startCallTimer() {
-    CallService.callStartTime = Date.now();
+    this.callStartTime = Date.now();
     DOM.callTimer.style.display = 'block';
+    clearInterval(this._timerInterval);
     this._timerInterval = setInterval(() => {
-      const diff = Date.now() - CallService.callStartTime;
+      const diff = Date.now() - this.callStartTime;
       const m = Math.floor(diff/60000).toString().padStart(2,'0');
       const s = Math.floor((diff%60000)/1000).toString().padStart(2,'0');
       DOM.callTimer.textContent = `${m}:${s}`;
     }, 1000);
   }
 };
-
     // ===== خدمة إدارة المحادثات المتقدمة =====
     const AdvancedChatService = {
         // مسح المحادثة
@@ -4692,8 +4777,7 @@ function openMediaViewer(url, type) {
         }
     });
 }
-
-// ===== خدمة تسجيل الصوت المحسنة =====
+// ===== خدمة تسجيل الصوت المحسنة (محدثة) =====
 const AudioService = {
     mediaRecorder: null,
     audioChunks: [],
@@ -4705,21 +4789,12 @@ const AudioService = {
     // بدء التسجيل
     startRecording: async function() {
         try {
-            console.log('بدء التسجيل...');
-            
-            // إيقاف أي تسجيل سابق إن وجد
             if (this.isRecording) {
                 this.stopRecording();
                 return;
             }
-            
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                audio: {
-                    channelCount: 1,
-                    sampleRate: 44100,
-                    sampleSize: 16
-                } 
-            });
+
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             
             this.audioChunks = [];
             this.mediaRecorder = new MediaRecorder(stream, {
@@ -4727,16 +4802,13 @@ const AudioService = {
             });
 
             this.mediaRecorder.ondataavailable = (event) => {
-                console.log('تم استقبال بيانات صوتية', event.data.size);
                 if (event.data.size > 0) {
                     this.audioChunks.push(event.data);
                 }
             };
 
             this.mediaRecorder.onstop = async () => {
-                console.log('تم إيقاف التسجيل، عدد القطع:', this.audioChunks.length);
                 this.audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
-                console.log('حجم التسجيل:', this.audioBlob.size);
                 
                 if (this.audioBlob.size > 0) {
                     await this.finishRecording();
@@ -4747,7 +4819,7 @@ const AudioService = {
                 stream.getTracks().forEach(track => track.stop());
             };
 
-            this.mediaRecorder.start(1000); // تجزئة التسجيل إلى قطع كل ثانية
+            this.mediaRecorder.start(1000);
             this.isRecording = true;
             this.recordingStartTime = Date.now();
             this.startRecordingTimer();
@@ -4757,7 +4829,6 @@ const AudioService = {
             DOM.recordBtn.title = 'إيقاف التسجيل';
             
         } catch (error) {
-            console.error('Error starting recording:', error);
             NotificationService.show('خطأ', 'تعذر الوصول إلى الميكروفون: ' + error.message, 'error');
         }
     },
@@ -4765,7 +4836,6 @@ const AudioService = {
     // إيقاف التسجيل
     stopRecording: function() {
         if (this.mediaRecorder && this.isRecording) {
-            console.log('إيقاف التسجيل...');
             this.mediaRecorder.stop();
             this.isRecording = false;
             this.stopRecordingTimer();
@@ -4776,10 +4846,9 @@ const AudioService = {
         }
     },
 
-    // بدء مؤقت التسجيل
+    // مؤقت التسجيل
     startRecordingTimer: function() {
-        this.stopRecordingTimer(); // تنظيف أي مؤقت سابق
-        
+        this.stopRecordingTimer();
         const timerElement = document.createElement('div');
         timerElement.id = 'recordingTimer';
         timerElement.className = 'record-timer';
@@ -4794,7 +4863,6 @@ const AudioService = {
             font-size: 12px;
             z-index: 1000;
         `;
-        
         document.body.appendChild(timerElement);
         
         this.recordingTimer = setInterval(() => {
@@ -4805,33 +4873,20 @@ const AudioService = {
         }, 1000);
     },
 
-    // إيقاف مؤقت التسجيل
     stopRecordingTimer: function() {
-        if (this.recordingTimer) {
-            clearInterval(this.recordingTimer);
-            this.recordingTimer = null;
-        }
-        
-        const timerElement = document.getElementById('recordingTimer');
-        if (timerElement) {
-            timerElement.remove();
-        }
+        if (this.recordingTimer) clearInterval(this.recordingTimer);
+        this.recordingTimer = null;
+        document.getElementById('recordingTimer')?.remove();
     },
 
     // معالجة التسجيل بعد الانتهاء
     finishRecording: async function() {
-        try {
-            const audioURL = URL.createObjectURL(this.audioBlob);
-            this.showAudioPreview(audioURL);
-        } catch (error) {
-            console.error('Error processing recording:', error);
-            NotificationService.show('خطأ', 'فشل في معالجة التسجيل: ' + error.message, 'error');
-        }
+        const audioURL = URL.createObjectURL(this.audioBlob);
+        this.showAudioPreview(audioURL);
     },
 
     // عرض معاينة التسجيل
     showAudioPreview: function(audioURL) {
-        // إزالة أي معاينة سابقة
         document.querySelectorAll('.audio-preview').forEach(el => el.remove());
         
         const previewContainer = document.createElement('div');
@@ -4854,7 +4909,20 @@ const AudioService = {
         const sendButton = document.createElement('button');
         sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
         sendButton.className = 'chat-send';
-        sendButton.onclick = () => this.sendRecording(this.audioBlob);
+        sendButton.onclick = async () => {
+            if (!this.audioBlob) return;
+            sendButton.disabled = true;
+            const oldHTML = sendButton.innerHTML;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            try {
+                await this.sendRecording(this.audioBlob);
+                this.audioBlob = null;
+                previewContainer.remove();
+            } finally {
+                sendButton.disabled = false;
+                sendButton.innerHTML = oldHTML;
+            }
+        };
         
         const cancelButton = document.createElement('button');
         cancelButton.innerHTML = '<i class="fas fa-times"></i>';
@@ -4864,10 +4932,7 @@ const AudioService = {
             this.audioBlob = null;
         };
         
-        previewContainer.appendChild(audioElement);
-        previewContainer.appendChild(sendButton);
-        previewContainer.appendChild(cancelButton);
-        
+        previewContainer.append(audioElement, sendButton, cancelButton);
         DOM.chatInputContainer.before(previewContainer);
     },
 
@@ -4879,35 +4944,25 @@ const AudioService = {
         }
 
         try {
-            NotificationService.show('جاري الإرسال', 'جاري تحميل التسجيل الصوتي...', 'info');
-            
             const chatId = [AppState.currentUser.uid, AppState.currentChat.id].sort().join('_');
             const fileName = `voice_message_${Date.now()}.webm`;
             const fileRef = storageRef(storage, `chats/${chatId}/${fileName}`);
             
-            // رفع الملف إلى التخزين
             const snapshot = await uploadBytes(fileRef, audioBlob);
             const downloadURL = await getDownloadURL(snapshot.ref);
-            
-            // حساب مدة التسجيل
             const duration = await this.calculateAudioDuration(audioBlob);
             
-            // حفظ الرسالة في قاعدة البيانات
             await addDoc(collection(db, 'chats', chatId, 'messages'), {
                 type: 'audio',
                 audioUrl: downloadURL,
-                duration: duration,
+                duration,
                 senderId: AppState.currentUser.uid,
                 timestamp: serverTimestamp(),
                 fileName: fileName
             });
-            
-            // تحديث واجهة المستخدم
-            document.querySelector('.audio-preview')?.remove();
+
             NotificationService.show('تم الإرسال', 'تم إرسال التسجيل الصوتي بنجاح', 'success');
-            
         } catch (error) {
-            console.error('Error sending recording:', error);
             NotificationService.show('خطأ', 'فشل في إرسال التسجيل: ' + error.message, 'error');
         }
     },
@@ -4917,23 +4972,17 @@ const AudioService = {
         return new Promise((resolve) => {
             const audio = new Audio();
             audio.src = URL.createObjectURL(audioBlob);
-            
             audio.onloadedmetadata = () => {
                 resolve(Math.round(audio.duration));
                 URL.revokeObjectURL(audio.src);
             };
-            
-            audio.onerror = () => {
-                resolve(0); // في حالة الخطأ، عودة بقيمة افتراضية
-            };
-            
-            //设定超时以防万一
+            audio.onerror = () => resolve(0);
             setTimeout(() => resolve(0), 5000);
         });
     }
 };
 
-// إضافة معالج الأحداث لزر التسجيل
+// زر التسجيل
 DOM.recordBtn.addEventListener('click', function() {
     if (AudioService.isRecording) {
         AudioService.stopRecording();
@@ -4941,7 +4990,6 @@ DOM.recordBtn.addEventListener('click', function() {
         AudioService.startRecording();
     }
 });
-    
     // ===== إعداد معالجات الأحداث =====
     const setupEventListeners = () => {
         // أحداث المصادقة
@@ -5160,41 +5208,84 @@ DOM.recordBtn.addEventListener('click', function() {
         DOM.globalSearchInput.addEventListener('input', (e) => {
             SearchService.globalSearch(e.target.value);
         });
-        
-        // أحداث المكالمات
-        DOM.callEnd.addEventListener('click', CallService.endCall);
-        DOM.callMute.addEventListener('click', CallService.toggleMute);
-        DOM.callVideo.addEventListener('click', CallService.toggleVideo);
-        DOM.callSpeaker.addEventListener('click', () => {
-            NotificationService.show('مكبر الصوت', 'تم تبديل وضع مكبر الصوت', 'info');
-        });
-        DOM.callChat.addEventListener('click', () => {
-            if (AppState.currentCall) {
-                CallService.endCall();
-                // افتح الدردشة مع جهة الاتصال
-                const contact = AppState.contacts.find(c => c.id === AppState.currentCall.contactId);
-                if (contact) {
-                    ContactService.selectContact(contact);
+
+// ==== الاستماع للمكالمات الواردة ====
+CallService.incomingUnsubscribe = null;
+
+CallService.listenIncomingCalls = function() {
+    if (!AppState.currentUser) return;
+
+    // إلغاء أي اشتراك سابق
+    if (this.incomingUnsubscribe) this.incomingUnsubscribe();
+
+    const q = query(
+        collection(db, 'calls'),
+        where('calleeId', '==', AppState.currentUser.uid)
+    );
+
+    this.incomingUnsubscribe = onSnapshot(q, (snap) => {
+        snap.docChanges().forEach(change => {
+            const docId = change.doc.id;
+            const data = change.doc.data();
+
+            if (change.type === 'added') {
+                if (!data.answer) {
+                    // إظهار واجهة المكالمة
+                    DOM.incomingCall.style.display = 'flex';
+                    DOM.incomingCallName.textContent = data.callerName || 'مكالمة واردة';
+                    DOM.incomingCallAvatarText.textContent = data.callerAvatar || (data.callerId ? data.callerId.charAt(0) : '?');
+
+                    // حفظ callId في dataset
+                    DOM.incomingCall.dataset.callId = docId;
+                    console.log('📞 مكالمة واردة:', docId, data);
+                }
+            }
+
+            if (change.type === 'removed' || (change.type === 'modified' && data.ended)) {
+                if (DOM.incomingCall.dataset.callId === docId) {
+                    DOM.incomingCall.style.display = 'none';
+                    delete DOM.incomingCall.dataset.callId;
                 }
             }
         });
-        
-        // أحداث المكالمات الواردة
-        DOM.incomingCallAccept.addEventListener('click', () => {
-            // في تطبيق حقيقي، هنا سيتم قبول المكالمة مع البيانات الفعلية
-            CallService.acceptCall({
-                callerId: 'test_caller_id',
-                callerName: DOM.incomingCallName.textContent,
-                callerAvatar: DOM.incomingCallAvatarText.textContent,
-                type: 'audio'
-            });
-        });
-        
-        DOM.incomingCallReject.addEventListener('click', () => {
-            DOM.incomingCall.style.display = 'none';
-            NotificationService.show('المكالمة', 'تم رفض المكالمة الواردة', 'info');
-        });
-        
+    }, (err) => {
+        console.warn('❌ خطأ في مراقبة المكالمات الواردة:', err);
+    });
+};
+
+// ==== أحداث المكالمات ====
+DOM.callEnd.addEventListener('click', CallService.endCall);
+DOM.callMute.addEventListener('click', CallService.toggleMute);
+DOM.callVideo.addEventListener('click', CallService.toggleVideo);
+DOM.callSpeaker.addEventListener('click', () => {
+    NotificationService.show('مكبر الصوت', 'تم تبديل وضع مكبر الصوت', 'info');
+});
+DOM.callChat.addEventListener('click', () => {
+    if (AppState.currentCall) {
+        CallService.endCall();
+        const contact = AppState.contacts.find(c => c.id === AppState.currentCall.contactId);
+        if (contact) {
+            ContactService.selectContact(contact);
+        }
+    }
+});
+
+// ==== أحداث المكالمات الواردة ====
+DOM.incomingCallAccept.addEventListener('click', async () => {
+    const callId = DOM.incomingCall.dataset.callId;
+    if (!callId) {
+        NotificationService.show('خطأ', 'معرّف المكالمة غير موجود', 'error');
+        return;
+    }
+    await CallService.acceptCall(callId);
+    DOM.incomingCall.style.display = 'none';
+});
+
+DOM.incomingCallReject.addEventListener('click', () => {
+    DOM.incomingCall.style.display = 'none';
+    delete DOM.incomingCall.dataset.callId;
+    NotificationService.show('المكالمة', 'تم رفض المكالمة الواردة', 'info');
+});
         // القائمة الرئيسية
         DOM.menuBtn.addEventListener('click', () => {
             DOM.menuDropdown.style.display = DOM.menuDropdown.style.display === 'block' ? 'none' : 'block';

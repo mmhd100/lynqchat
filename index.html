@@ -7,68 +7,69 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-        --primary: #128C7E;
-        --primary-dark: #075E54;
-        --primary-light: #25D366;
-        --secondary: #34B7F1;
-        --light: #FFFFFF;
-        --light-gray: #F0F2F5;
-        --gray: #E6E6E6;
-        --dark-gray: #8696A0;
-        --dark: #3B4A54;
-        --text: #111B21;
-        --error: #EA4335;
-        --success: #34A853;
-        --warning: #FBBC05;
-        --sidebar-width: 380px;
-        --header-height: 64px;
-        --transition: all 0.3s ease;
-        --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        --radius: 0.5rem;
-    }
+            --primary: #128C7E;
+            --primary-dark: #075E54;
+            --primary-light: #25D366;
+            --secondary: #34B7F1;
+            --light: #FFFFFF;
+            --light-gray: #F0F2F5;
+            --gray: #E6E6E6;
+            --dark-gray: #8696A0;
+            --dark: #3B4A54;
+            --text: #111B21;
+            --error: #EA4335;
+            --success: #34A853;
+            --warning: #FBBC05;
+            --sidebar-width: 380px;
+            --header-height: 64px;
+            --transition: all 0.3s ease;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --radius: 0.5rem;
+        }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', 'Noto Sans Arabic', Helvetica, Arial, sans-serif;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Noto Sans Arabic', Helvetica, Arial, sans-serif;
+        }
 
-    body {
-        background-color: var(--light-gray);
-        color: var(--text);
-        direction: rtl;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        font-size: 16px;
-        line-height: 1.5;
-    }
+        body {
+            background-color: var(--light-gray);
+            color: var(--text);
+            direction: rtl;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-size: 16px;
+            line-height: 1.5;
+        }
 
-    /* تحسينات عامة */
-    button {
-        cursor: pointer;
-        transition: var(--transition);
-    }
+        /* تحسينات عامة */
+        button {
+            cursor: pointer;
+            transition: var(--transition);
+        }
 
-    input, textarea {
-        font-family: inherit;
-    }
+        input, textarea {
+            font-family: inherit;
+        }
 
-    /* الهيدر */
-    .header {
-        background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-        color: var(--light);
-        padding: 0.75rem 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: var(--shadow);
-        height: var(--header-height);
-        z-index: 100;
-        position: relative;
-    }
+        /* الهيدر */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--light);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            height: var(--header-height);
+            z-index: 100;
+            position: relative;
+        }
+
         .logo {
             display: flex;
             align-items: center;
@@ -120,6 +121,7 @@
             flex: 1;
             overflow: hidden;
             position: relative;
+            height: calc(100vh - var(--header-height));
         }
 
         /* الشريط الجانبي */
@@ -132,6 +134,7 @@
             transition: var(--transition);
             position: relative;
             z-index: 90;
+            height: 100%;
         }
 
         .profile-section {
@@ -308,7 +311,7 @@
             font-weight: 600;
         }
 
-       /* منطقة الدردشة */
+        /* منطقة الدردشة */
         .chat-area {
             flex: 1;
             display: flex;
@@ -702,6 +705,7 @@
 
         .form-group {
             text-align: right;
+            margin-bottom: 1rem;
         }
 
         .form-group label {
@@ -819,17 +823,17 @@
             background-color: var(--light-gray);
         }
 
-    /* تحسين شريط التمرير */
-    .chat-messages::-webkit-scrollbar {
-        width: 6px;
-    }
-    .chat-messages::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 3px;
-    }
-    .chat-messages::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(0, 0, 0, 0.3);
-    }
+        /* تحسين شريط التمرير */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
 
         /* تأثيرات للرسائل المرسلة */
         .message.sent .message-status .fa-check {
@@ -879,6 +883,13 @@
             .feature {
                 width: 100%;
                 max-width: 300px;
+            }
+
+            /* تحسينات للشاشات الصغيرة */
+            .chat-header,
+            .chat-input-container,
+            .security-indicator {
+                display: flex !important;
             }
         }
 
@@ -1024,118 +1035,120 @@
             color: var(--dark-gray);
             cursor: pointer;
         }
+
         /* زر العودة للشريط الجانبي */
-.back-button {
-    background: transparent;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: var(--dark-gray);
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-    margin-left: 10px;
-}
+        .back-button {
+            background: transparent;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: var(--dark-gray);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            margin-left: 10px;
+        }
 
-.back-button:hover {
-    background-color: var(--light-gray);
-    color: var(--primary);
-}
+        .back-button:hover {
+            background-color: var(--light-gray);
+            color: var(--primary);
+        }
 
-/* القائمة المنسدلة */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
+        /* القائمة المنسدلة */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--light);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 0.5rem 0;
-    min-width: 200px;
-    z-index: 1000;
-    display: none;
-    animation: fadeIn 0.2s ease;
-}
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--light);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
 
-.dropdown-menu.show {
-    display: block;
-}
+        .dropdown-menu.show {
+            display: block;
+        }
 
-.dropdown-item {
-    width: 100%;
-    text-align: right;
-    padding: 0.75rem 1rem;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--text);
-    transition: var(--transition);
-    font-size: 0.9rem;
-}
+        .dropdown-item {
+            width: 100%;
+            text-align: right;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text);
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
 
-.dropdown-item:hover {
-    background-color: var(--light-gray);
-    color: var(--primary);
-}
+        .dropdown-item:hover {
+            background-color: var(--light-gray);
+            color: var(--primary);
+        }
 
-.dropdown-item i {
-    width: 16px;
-}
+        .dropdown-item i {
+            width: 16px;
+        }
 
-/* مؤشر الكتابة في رأس المحادثة */
-.typing-header-indicator {
-    display: flex;
-    align-items: center;
-    color: var(--primary);
-    font-size: 0.85rem;
-    margin-top: 2px;
-}
+        /* مؤشر الكتابة في رأس المحادثة */
+        .typing-header-indicator {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            font-size: 0.85rem;
+            margin-top: 2px;
+        }
 
-.typing-header-dots {
-    display: flex;
-    margin-right: 0.5rem;
-}
+        .typing-header-dots {
+            display: flex;
+            margin-right: 0.5rem;
+        }
 
-.typing-header-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    margin: 0 1px;
-    animation: typingAnimation 1.4s infinite ease-in-out;
-}
+        .typing-header-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            margin: 0 1px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
 
-.typing-header-dot:nth-child(1) { animation-delay: 0s; }
-.typing-header-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-header-dot:nth-child(3) { animation-delay: 0.4s; }
+        .typing-header-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-header-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-header-dot:nth-child(3) { animation-delay: 0.4s; }
 
-/* وسائط متجاوبة لرأس المحادثة */
-@media (max-width: 768px) {
-    .back-button {
-        display: flex;
-    }
-    
-    .chat-actions {
-        gap: 0.1rem;
-    }
-    
-    .chat-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
-    }
-}
+        /* وسائط متجاوبة لرأس المحادثة */
+        @media (max-width: 768px) {
+            .back-button {
+                display: flex;
+            }
+            
+            .chat-actions {
+                gap: 0.1rem;
+            }
+            
+            .chat-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+        }
+
         /* صفحة الإعدادات */
         .settings-page {
             display: none;
@@ -1768,232 +1781,238 @@
             padding: 1rem;
             font-style: italic;
         }
+
         /* إصلاح شاشة الترحيب */
-.welcome-screen {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba(18, 140, 126, 0.1), rgba(7, 94, 84, 0.1));
-    padding: 1.5rem;
-    text-align: center;
-    overflow-y: auto; /* تمكين التمرير عند صغر الشاشة */
-}
+        .welcome-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(18, 140, 126, 0.1), rgba(7, 94, 84, 0.1));
+            padding: 1.5rem;
+            text-align: center;
+            overflow-y: auto; /* تمكين التمرير عند صغر الشاشة */
+        }
 
-/* إصلاح العناصر داخل شاشة الترحيب */
-.welcome-features {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    max-width: 100%;
-}
+        /* إصلاح العناصر داخل شاشة الترحيب */
+        .welcome-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 100%;
+        }
 
-/* صندوق الميزة */
-.feature {
-    background: white;
-    border-radius: 12px;
-    padding: 1rem;
-    width: 100%;
-    max-width: 280px; /* ضبط الحجم في الموبايل */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: var(--transition);
-}
+        /* صندوق الميزة */
+        .feature {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            width: 100%;
+            max-width: 280px; /* ضبط الحجم في الموبايل */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
 
-/* تحسين للشاشات الصغيرة */
-@media (max-width: 576px) {
-    .welcome-icon {
-        width: 70px;
-        height: 70px;
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-    }
-    .welcome-title {
-        font-size: 1.3rem;
-        margin-bottom: 0.5rem;
-    }
-    .welcome-text {
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
-    }
-    .feature {
-        max-width: 100%;
-    }
-    /* عناصر التسجيل  */
-    .recording {
-    background-color: #f44336 !important;
-    color: white !important;
-    animation: pulse 1s infinite;
-}
+        /* تحسين للشاشات الصغيرة */
+        @media (max-width: 576px) {
+            .welcome-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+            .welcome-title {
+                font-size: 1.3rem;
+                margin-bottom: 0.5rem;
+            }
+            .welcome-text {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+            .feature {
+                max-width: 100%;
+            }
+        }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
+        /* عناصر التسجيل  */
+        .recording {
+            background-color: #f44336 !important;
+            color: white !important;
+            animation: pulse 1s infinite;
+        }
 
-.record-timer {
-    font-weight: bold;
-}
-/* أنماط معاينة الوسائط */
-.media-preview {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
 
-.media-preview-content {
-    background: var(--light);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    max-width: 90%;
-    max-height: 90%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        .record-timer {
+            font-weight: bold;
+        }
 
-.media-preview-close {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: transparent;
-    border: none;
-    color: var(--dark-gray);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
+        /* أنماط معاينة الوسائط */
+        .media-preview {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
 
-.media-preview img,
-.media-preview video {
-    max-width: 100%;
-    max-height: 300px;
-    margin-bottom: 1rem;
-}
+        .media-preview-content {
+            background: var(--light);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.file-preview {
-    text-align: center;
-    padding: 1rem;
-}
+        .media-preview-close {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: transparent;
+            border: none;
+            color: var(--dark-gray);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
 
-.file-preview i {
-    color: var(--primary);
-    margin-bottom: 1rem;
-}
+        .media-preview img,
+        .media-preview video {
+            max-width: 100%;
+            max-height: 300px;
+            margin-bottom: 1rem;
+        }
 
-.media-preview-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
+        .file-preview {
+            text-align: center;
+            padding: 1rem;
+        }
 
-/* أنماط عرض الملفات في المحادثة */
-.message-doc {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: var(--radius);
-    margin-top: 0.5rem;
-}
+        .file-preview i {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
 
-.message-doc-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--primary);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    margin-left: 0.5rem;
-}
+        .media-preview-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
 
-.message-doc-info {
-    flex: 1;
-    min-width: 0;
-}
+        /* أنماط عرض الملفات في المحادثة */
+        .message-doc {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: var(--radius);
+            margin-top: 0.5rem;
+        }
 
-.message-doc-name {
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .message-doc-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-left: 0.5rem;
+        }
 
-.message-doc-size {
-    font-size: 0.75rem;
-    color: var(--dark-gray);
-}
+        .message-doc-info {
+            flex: 1;
+            min-width: 0;
+        }
 
-.message-doc-download {
-    color: var(--primary);
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: var(--transition);
-}
+        .message-doc-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-.message-doc-download:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
+        .message-doc-size {
+            font-size: 0.75rem;
+            color: var(--dark-gray);
+        }
 
-/* تحسينات للرسائل متعددة الوسائط */
-.message-media {
-    margin-top: 0.5rem;
-    border-radius: var(--radius);
-    overflow: hidden;
-    max-width: 300px;
-}
+        .message-doc-download {
+            color: var(--primary);
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
 
-.message-img {
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius);
-    cursor: pointer;
-}
+        .message-doc-download:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
 
-/* تحسينات للشريط الجانبي على الجوال */
-@media (max-width: 768px) {
-    .media-preview-content {
-        width: 95%;
-        height: auto;
-    }
-    
-    .message-media {
-        max-width: 250px;
-    }
-    /* تخصيص القائمة المنسدلة لزر الإرفاق في الشات */
-.chat-input-container .dropdown-menu {
-    position: absolute;
-    bottom: 60px; /* فوق زر الإرفاق */
-    right: 0;     /* بمحاذاة الزر من اليمين */
-    left: auto;
-    top: auto;
-    background: var(--light);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 0.5rem 0;
-    min-width: 180px;
-    z-index: 2000;
-    display: none;
-}
+        /* تحسينات للرسائل متعددة الوسائط */
+        .message-media {
+            margin-top: 0.5rem;
+            border-radius: var(--radius);
+            overflow: hidden;
+            max-width: 300px;
+        }
 
-/* إظهار عند إضافة كلاس show */
-.chat-input-container .dropdown-menu.show {
-    display: block;
-}
+        .message-img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+
+        /* تحسينات للشريط الجانبي على الجوال */
+        @media (max-width: 768px) {
+            .media-preview-content {
+                width: 95%;
+                height: auto;
+            }
+            
+            .message-media {
+                max-width: 250px;
+            }
+        }
+
+        /* تخصيص القائمة المنسدلة لزر الإرفاق في الشات */
+        .chat-input-container .dropdown-menu {
+            position: absolute;
+            bottom: 60px; /* فوق زر الإرفاق */
+            right: 0;     /* بمحاذاة الزر من اليمين */
+            left: auto;
+            top: auto;
+            background: var(--light);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            min-width: 180px;
+            z-index: 2000;
+            display: none;
+        }
+
+        /* إظهار عند إضافة كلاس show */
+        .chat-input-container .dropdown-menu.show {
+            display: block;
+        }
 
         /* معاينة الوسائط في نافذة كاملة */
         .media-viewer {
@@ -2039,20 +2058,118 @@
             cursor: pointer;
             z-index: 3001;
         }
+
         .chat-footer {
-  flex: 0 0 auto;
-  background: var(--light, #fff);
-  position: sticky;
-  bottom: 0;
-  z-index: 5;
+            flex: 0 0 auto;
+            background: var(--light, #fff);
+            position: sticky;
+            bottom: 0;
+            z-index: 5;
+        }
+
+        /* تحسينات جديدة لثبات الواجهة */
+        .chat-area-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .flex-display {
+            display: flex !important;
+        }
+
+        .chat-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        /* تنسيقات إضافية لتحسين عرض الصور */
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 2.5rem;
+    margin: 0 auto 1.5rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 4px solid var(--light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.3s ease;
 }
+
+.profile-avatar.has-image {
+    background: transparent;
+}
+
+.profile-avatar-text {
+    position: absolute;
+    z-index: 1;
+}
+
+.profile-avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: none;
+}
+
+.profile-avatar.has-image .profile-avatar-image {
+    display: block;
+}
+
+.profile-avatar.has-image .profile-avatar-text {
+    display: none;
+}
+
+.loading-spinner {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid var(--primary-light);
+    animation: spin 1s linear infinite;
+    z-index: 10;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
     </style>
 </head>
 <body>
 <!-- شاشة المصادقة -->
 <div class="auth-container" id="authContainer">
-    <div class="auth-box">
+<div class="auth-box">
         <!-- رأس المصادقة -->
         <div class="auth-header">
             <div class="auth-icon">
@@ -2117,10 +2234,11 @@
     </div>
 </div>
 
+
 <!-- التطبيق الرئيسي -->
 <div id="appContainer" style="display: none;">
     <div class="header">
-        <div class="logo">
+ <div class="logo">
             <button class="toggle-sidebar" id="toggleSidebar">
                 <i class="fas fa-bars"></i>
             </button>
@@ -2149,10 +2267,11 @@
         </div>
     </div>
 
+
     <div class="app-container">
         <!-- الشريط الجانبي -->
         <aside class="sidebar" id="sidebar">
-            <div class="profile-section">
+    <div class="profile-section">
                 <div class="profile-avatar" id="userAvatar">
                     م
                     <span class="status-indicator"></span>
@@ -2184,9 +2303,10 @@
 
         <!-- منطقة المحادثة -->
         <main class="chat-area">
-            <!-- شاشة الترحيب (تظهر عند عدم وجود محادثة نشطة) -->
-            <div class="welcome-screen" id="welcomeScreen">
-                <div class="welcome-icon"><i class="fas fa-lock"></i></div>
+            <div class="chat-area-container">
+                <!-- شاشة الترحيب (تظهر عند عدم وجود محادثة نشطة) -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-icon"><i class="fas fa-lock"></i></div>
                 <h1 class="welcome-title">مرحباً بك في LynqChat</h1>
                 <p class="welcome-text">
                     تطبيق المراسلة الآمن يحافظ على خصوصيتك. جميع محادثاتك مشفرة من طرف إلى طرف.
@@ -2210,8 +2330,10 @@
                 </div>
             </div>
 
-            <!-- رأس المحادثة -->
-            <header class="chat-header" style="display: none;">
+                <!-- منطقة المحادثة النشطة -->
+                <div class="chat-content hidden" id="chatContent">
+                    <!-- رأس المحادثة -->
+                    <header class="chat-header">
                 <div class="current-contact">
                     <button class="back-button" id="backButton">
                         <i class="fas fa-arrow-right"></i>
@@ -2270,22 +2392,24 @@
                 </div>
             </header>
 
-            <!-- الرسائل -->
-            <div class="chat-messages" id="chatMessages">
-                <!-- مؤشر الكتابة -->
-                <div class="typing-indicator" id="typingIndicator">
-                    <div class="typing-dots">
+                    <!-- الرسائل -->
+                    <div class="chat-main">
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- مؤشر الكتابة -->
+                            <div class="typing-indicator" id="typingIndicator">
+                        <div class="typing-dots">
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                     </div>
                     <span id="typingText">يكتب الآن...</span>
-                </div>
-            </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- حقل الإدخال -->
-           <div class="chat-input-container" style="display: none;">
-    <div class="dropdown">
+                    <!-- حقل الإدخال -->
+                    <div class="chat-input-container">
+                      <div class="dropdown">
         <button class="chat-input-action" id="attachBtn" title="إرفاق ملف">
             <i class="fas fa-paperclip"></i>
         </button>
@@ -2340,10 +2464,13 @@
     <div id="stickerGrid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px;"></div>
   </div>
 </div>
-            <!-- مؤشر الأمان -->
-            <div class="security-indicator" style="display: none;">
-                <i class="fas fa-lock"></i>
+
+                    <!-- مؤشر الأمان -->
+                    <div class="security-indicator">
+                      <i class="fas fa-lock"></i>
                 <span>المحادثة مشفرة من طرف إلى طرف. لا يمكن لأحد غيرك والمستلم قراءة هذه الرسائل.</span>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -2641,6 +2768,7 @@
 </div>
 
 <script type="module">
+    
     // ===== تهيئة Firebase =====
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
@@ -2695,6 +2823,7 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
+   
     // ===== إدارة حالة التطبيق =====
     const AppState = {
         currentUser: null,
@@ -2722,6 +2851,7 @@
 
     // ===== عناصر DOM =====
     const DOM = {
+        chatContent: document.getElementById('chatContent'),
         authContainer: document.getElementById('authContainer'),
         appContainer: document.getElementById('appContainer'),
         loginForm: document.getElementById('loginForm'),
@@ -2821,7 +2951,7 @@
     };
 
     // ===== خدمة الإشعارات =====
-    const NotificationService = {
+        const NotificationService = {
         show: (title, message, type = 'success', duration = 5000) => {
             DOM.notificationTitle.textContent = title;
             DOM.notificationMessage.textContent = message;
@@ -2841,7 +2971,7 @@
 
     // إغلاق الإشعار عند النقر على زر الإغلاق
     DOM.notificationClose.addEventListener('click', NotificationService.hide);
-
+   
     // ===== خدمة المصادقة =====
     const AuthService = {
         signIn: (email, password) => {
@@ -2893,6 +3023,15 @@
                 });
         }
     };
+// أضف دالة لتنظيف الاشتراكات
+const cleanup = () => {
+    if (ContactService.contactsUnsubscribe) {
+        ContactService.contactsUnsubscribe();
+    }
+    if (ChatService.messagesUnsubscribe) {
+        ChatService.messagesUnsubscribe();
+    }
+};
 
     // ===== خدمة المستخدم =====
     const UserService = {
@@ -3150,6 +3289,7 @@
             }
         }
     };
+    
     // ===== خدمة إدارة الملفات المحسنة =====
     const FileService = {
         currentFiles: [],
@@ -3788,349 +3928,387 @@
             }
         }
     };
-// FileService.uploadProfilePicture
-async function uploadProfilePicture(file) {
-    if (!AppState.currentUser) throw new Error("User not authenticated");
-    const userId = AppState.currentUser.uid;
-    const ext = (file.name.split('.').pop() || 'png').toLowerCase();
-    const path = `users/${userId}/avatar.${ext}`;
-    const sRef = storageRef(storage, path);
+// ===== نظام متكامل لإدارة صور الملف الشخصي =====
+const ProfileImageManager = {
+    // تهيئة النظام
+    init: function() {
+        this.setupEventListeners();
+        this.loadCurrentUserImage();
+        console.log("Profile Image Manager initialized");
+    },
+    
+    // إعداد معالجات الأحداث
+    setupEventListeners: function() {
+        const profileImageInput = document.getElementById('profileImageInput');
+        
+        if (!DOM.profileAvatar || !profileImageInput) {
+            console.warn("عناصر رفع الصورة غير موجودة في DOM، سيتم إعادة المحاولة");
+            setTimeout(() => this.setupEventListeners(), 500);
+            return;
+        }
+        
+        // إزالة المعالجات القديمة لمنع التكرار
+        DOM.profileAvatar.removeEventListener('click', this.handleAvatarClick);
+        profileImageInput.removeEventListener('change', this.handleImageSelect);
+        
+        // إضافة المعالجات الجديدة
+        DOM.profileAvatar.addEventListener('click', this.handleAvatarClick.bind(this));
+        profileImageInput.addEventListener('change', this.handleImageSelect.bind(this));
+        
+        console.log("تم إعداد معالجات أحداث رفع الصورة بنجاح");
+    },
+    
+    // معالجة النقر على الأفاتار
+    handleAvatarClick: function() {
+        const profileImageInput = document.getElementById('profileImageInput');
+        if (profileImageInput) {
+            profileImageInput.click();
+        }
+    },
+    
+    // معالجة اختيار الصورة
+    handleImageSelect: async function(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        
+        // التحقق من نوع الملف
+        if (!file.type.startsWith('image/')) {
+            NotificationService.show('خطأ', 'يرجى اختيار ملف صورة صالح (JPEG, PNG, etc.)', 'error');
+            return;
+        }
+        
+        // التحقق من حجم الملف (الحد الأقصى 5MB)
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+            NotificationService.show('خطأ', 'حجم الصورة كبير جداً (الحد الأقصى 5MB)', 'error');
+            return;
+        }
+        
+        // عرض معاينة للصورة
+        this.showImagePreview(file);
+        
+        try {
+            // رفع الصورة إلى الخادم
+            const imageUrl = await this.uploadProfileImage(file);
+            
+            // تحديث الصورة في جميع أنحاء التطبيق
+            this.updateAllProfileImages(imageUrl);
+            
+            // إظهار رسالة النجاح
+            NotificationService.show('تم', 'تم تحديث صورة الملف الشخصي بنجاح', 'success');
+            
+            // إعادة تعيين حقل الإدخال
+            e.target.value = '';
+        } catch (error) {
+            console.error("فشل في رفع الصورة:", error);
+            NotificationService.show('خطأ', 'فشل في رفع الصورة: ' + error.message, 'error');
+            
+            // استعادة الحالة الأصلية في حالة الفشل
+            this.restoreDefaultAvatar();
+        }
+    },
+    
+    // عرض معاينة الصورة
+    showImagePreview: function(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (DOM.profileAvatar) {
+                DOM.profileAvatar.style.backgroundImage = `url(${e.target.result})`;
+                DOM.profileAvatar.style.backgroundSize = 'cover';
+                DOM.profileAvatar.style.backgroundPosition = 'center';
+                
+                // إخفاء النص إذا كان موجوداً
+                if (DOM.avatarText) {
+                    DOM.avatarText.style.display = 'none';
+                }
+            }
+        };
+        reader.readAsDataURL(file);
+    },
+    
+    // رفع صورة الملف الشخصي إلى الخادم
+    uploadProfileImage: async function(file) {
+        if (!AppState.currentUser) {
+            throw new Error("يجب تسجيل الدخول أولاً");
+        }
+        
+        const userId = AppState.currentUser.uid;
+        const fileExtension = file.name.split('.').pop() || 'png';
+        const fileName = `profile_${userId}_${Date.now()}.${fileExtension}`;
+        const filePath = `profile_images/${userId}/${fileName}`;
+        
+        // إنشاء مرجع للتخزين
+        const storageReference = storageRef(storage, filePath);
+        
+        // رفع الملف مع عرض تقدم الرفع
+        const uploadTask = uploadBytesResumable(storageReference, file);
+        
+        // عرض تقدم الرفع (اختياري)
+        uploadTask.on('state_changed', 
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log(`Upload is ${progress}% done`);
+            },
+            (error) => {
+                console.error("Error during upload:", error);
+                throw new Error("فشل في رفع الملف: " + error.message);
+            }
+        );
+        
+        // انتظار اكتمال الرفع
+        await uploadTask;
+        
+        // الحصول على رابط التنزيل
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        
+        // حفظ رابط الصورة في قاعدة البيانات
+        await setDoc(doc(db, 'users', userId), { 
+            avatarUrl: downloadURL,
+            lastUpdated: new Date().toISOString()
+        }, { merge: true });
+        
+        // تحديث صورة الملف الشخصي في Authentication
+        try {
+            await updateProfile(auth.currentUser, { 
+                photoURL: downloadURL 
+            });
+        } catch (error) {
+            console.warn("تعذر تحديث صورة الملف الشخصي في Authentication:", error);
+            // لا نرمي خطأ هنا لأن العملية يمكن أن تستمر
+        }
+        
+        return downloadURL;
+    },
+    
+    // تحديث جميع صور الملف الشخصي في الواجهة
+    updateAllProfileImages: function(imageUrl) {
+        // تحديث صورة الملف الشخصي في صفحة الإعدادات
+        this.updateProfileAvatar(imageUrl);
+        
+        // تحديث صورة المستخدم في الشريط الجانبي
+        this.updateSidebarAvatar(imageUrl);
+        
+        // تحديث أي عناصر أخرى تعرض صورة المستخدم
+        this.updateOtherProfileImages(imageUrl);
+        
+        // حفظ رابط الصورة محلياً للاستخدام المستقبلي
+        localStorage.setItem(`user_${AppState.currentUser.uid}_avatar`, imageUrl);
+    },
+    
+    // تحديث صورة الملف الشخصي في صفحة الإعدادات
+    updateProfileAvatar: function(imageUrl) {
+        if (DOM.profileAvatar) {
+            DOM.profileAvatar.style.backgroundImage = `url(${imageUrl})`;
+            DOM.profileAvatar.style.backgroundSize = 'cover';
+            DOM.profileAvatar.style.backgroundPosition = 'center';
+            
+            // إخفاء النص إذا كان موجوداً
+            if (DOM.avatarText) {
+                DOM.avatarText.style.display = 'none';
+            }
+        }
+    },
+    
+    // تحديث صورة المستخدم في الشريط الجانبي
+    updateSidebarAvatar: function(imageUrl) {
+        if (DOM.userAvatar) {
+            // تحديث الخلفية إذا كان عنصراً مع خلفية
+            DOM.userAvatar.style.backgroundImage = `url(${imageUrl})`;
+            DOM.userAvatar.style.backgroundSize = 'cover';
+            DOM.userAvatar.style.backgroundPosition = 'center';
+            
+            // إخفاء النص الأولي
+            DOM.userAvatar.textContent = '';
+            
+            // إذا كان هناك عنصر نص منفصل، إخفاؤه
+            const avatarTextElement = DOM.userAvatar.querySelector('.avatar-text');
+            if (avatarTextElement) {
+                avatarTextElement.style.display = 'none';
+            }
+            
+            // إضافة فئة للإشارة إلى وجود صورة
+            DOM.userAvatar.classList.add('has-profile-image');
+        }
+        
+        // تحديث صورة المستخدم في رأس الشريط الجانبي
+        const sidebarHeaderAvatar = document.querySelector('.sidebar-header .user-avatar');
+        if (sidebarHeaderAvatar) {
+            sidebarHeaderAvatar.style.backgroundImage = `url(${imageUrl})`;
+            sidebarHeaderAvatar.style.backgroundSize = 'cover';
+            sidebarHeaderAvatar.classList.add('has-profile-image');
+        }
+    },
+    
+    // تحديث أي عناصر أخرى تعرض صورة المستخدم
+    updateOtherProfileImages: function(imageUrl) {
+        // تحديث الصورة في رأس المحادثة إذا كان مفتوحاً
+        const chatHeaderAvatar = document.querySelector('.chat-header .user-avatar');
+        if (chatHeaderAvatar) {
+            chatHeaderAvatar.style.backgroundImage = `url(${imageUrl})`;
+            chatHeaderAvatar.style.backgroundSize = 'cover';
+        }
+        
+        // تحديث الصورة في عناصر أخرى قد تكون موجودة
+        const allAvatarElements = document.querySelectorAll('.user-avatar, .avatar-image');
+        allAvatarElements.forEach(element => {
+            if (element.dataset.userId === AppState.currentUser.uid) {
+                element.style.backgroundImage = `url(${imageUrl})`;
+                element.style.backgroundSize = 'cover';
+                element.classList.add('has-profile-image');
+            }
+        });
+    },
+    
+    // استعادة الصورة الافتراضية في حالة فشل الرفع
+    restoreDefaultAvatar: function() {
+        if (DOM.profileAvatar) {
+            DOM.profileAvatar.style.backgroundImage = '';
+            
+            // إعادة عرض النص الأولي
+            if (DOM.avatarText) {
+                DOM.avatarText.style.display = 'block';
+            }
+        }
+        
+        if (DOM.userAvatar) {
+            DOM.userAvatar.style.backgroundImage = '';
+            DOM.userAvatar.textContent = AppState.currentUser?.displayName?.charAt(0) || 'م';
+            
+            // إعادة عرض النص إذا كان هناك عنصر منفصل
+            const avatarTextElement = DOM.userAvatar.querySelector('.avatar-text');
+            if (avatarTextElement) {
+                avatarTextElement.style.display = 'block';
+            }
+            
+            // إزالة فئة الصورة
+            DOM.userAvatar.classList.remove('has-profile-image');
+        }
+    },
+    
+    // تحميل صورة المستخدم الحالي إذا كانت موجودة
+    loadCurrentUserImage: function() {
+        if (!AppState.currentUser) return;
+        
+        // محاولة تحميل الصورة من التخزين المحلي أولاً
+        const cachedImageUrl = localStorage.getItem(`user_${AppState.currentUser.uid}_avatar`);
+        if (cachedImageUrl) {
+            this.updateAllProfileImages(cachedImageUrl);
+        }
+        
+        // ثم تحميل أحدث صورة من الخادم
+        this.loadProfileImageFromServer();
+    },
+    
+    // تحميل صورة الملف الشخصي من الخادم
+    loadProfileImageFromServer: async function() {
+        if (!AppState.currentUser) return;
+        
+        try {
+            const userDoc = await getDoc(doc(db, 'users', AppState.currentUser.uid));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                if (userData.avatarUrl) {
+                    this.updateAllProfileImages(userData.avatarUrl);
+                    
+                    // تخزين الصورة محلياً للاستخدام المستقبلي
+                    localStorage.setItem(`user_${AppState.currentUser.uid}_avatar`, userData.avatarUrl);
+                }
+            }
+        } catch (error) {
+            console.error("Error loading profile image from server:", error);
+        }
+    },
+    
+    // حذف صورة الملف الشخصي
+    deleteProfileImage: async function() {
+        if (!AppState.currentUser) return;
+        
+        try {
+            // تحديث قاعدة البيانات
+            await setDoc(doc(db, 'users', AppState.currentUser.uid), { 
+                avatarUrl: null 
+            }, { merge: true });
+            
+            // تحديث Authentication
+            try {
+                await updateProfile(auth.currentUser, { 
+                    photoURL: null 
+                });
+            } catch (error) {
+                console.warn("تعذر حذف صورة الملف الشخصي من Authentication:", error);
+            }
+            
+            // تحديث الواجهة
+            this.restoreDefaultAvatar();
+            
+            // حذف من التخزين المحلي
+            localStorage.removeItem(`user_${AppState.currentUser.uid}_avatar`);
+            
+            NotificationService.show('تم', 'تم حذف صورة الملف الشخصي بنجاح', 'success');
+        } catch (error) {
+            console.error("Error deleting profile image:", error);
+            NotificationService.show('خطأ', 'فشل في حذف صورة الملف الشخصي', 'error');
+        }
+    }
+};
 
-    // رفع مع fallback
-    if (typeof uploadBytesResumable === 'function') {
-        await new Promise((resolve, reject) => {
-            const task = uploadBytesResumable(sRef, file);
-            task.on('state_changed', () => {}, reject, () => resolve());
+// ===== تهيئة النظام عند تحميل الصفحة =====
+document.addEventListener('DOMContentLoaded', function() {
+    // تجاهل أخطاء Analytics غير الضرورية
+    try {
+        if (typeof firebase !== 'undefined' && firebase.analytics) {
+            // firebase.analytics().setAnalyticsCollectionEnabled(false);
+        }
+    } catch (e) {
+        console.log("Analytics not available, continuing without it");
+    }
+    
+    // تهيئة نظام إدارة صور الملف الشخصي بعد تحميل DOM بالكامل
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => ProfileImageManager.init(), 100);
         });
     } else {
-        await uploadBytes(sRef, file);
-    }
-
-    const url = await getDownloadURL(sRef);
-
-    // حفظ رابط الصورة في Firestore و (اختياري) في بروفيل الـ Auth
-    await setDoc(doc(db, 'users', userId), { avatarUrl: url }, { merge: true });
-    try {
-        await updateProfile(auth.currentUser, { photoURL: url });
-    } catch(e) {
-        // ليس خطأ قاتل — فقط سجل
-        console.warn("updateProfile failed:", e);
-    }
-
-    // حدّث الواجهة فوراً
-    DOM.userAvatar.style.backgroundImage = `url(${url})`;
-    DOM.avatarText.textContent = (AppState.currentUser.displayName || '').charAt(0) || 'م';
-
-    return url;
-}
-// عرض نافذة اختيار الملف عند النقر على avatar في صفحة الإعدادات
-const profileImageInput = document.getElementById('profileImageInput');
-DOM.profileAvatar.addEventListener('click', () => profileImageInput.click());
-
-profileImageInput.addEventListener('change', async (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (!f) return;
-    // عرض معاينة سريعة (اختياري)
-    const reader = new FileReader();
-    reader.onload = () => {
-        DOM.profileAvatar.style.backgroundImage = `url(${reader.result})`;
-    };
-    reader.readAsDataURL(f);
-
-    try {
-        const url = await uploadProfilePicture(f);
-        NotificationService.show('تم', 'تم تحديث صورة الملف الشخصي', 'success');
-    } catch (err) {
-        console.error(err);
-        NotificationService.show('خطأ', 'فشل رفع صورة الملف الشخصي: ' + (err.message||err), 'error');
+        setTimeout(() => ProfileImageManager.init(), 100);
     }
 });
-    // ===== خدمة البحث =====
-    const SearchService = {
-        globalSearch: (query) => {
-            if (!query.trim()) {
-                DOM.contactResults.innerHTML = '';
-                DOM.messageResults.innerHTML = '';
-                DOM.mediaResults.innerHTML = '';
-                return;
-            }
-            
-            // البحث في جهات الاتصال
-            const contactResults = AppState.contacts.filter(contact => 
-                contact.name.toLowerCase().includes(query.toLowerCase())
-            );
-            
-            SearchService.displayContactResults(contactResults);
-            
-            // البحث في الرسائل (يتطلب تنفيذ أكثر تعقيداً في تطبيق حقيقي)
-            SearchService.searchMessages(query);
-        },
-        
-        displayContactResults: (contacts) => {
-            DOM.contactResults.innerHTML = '';
-            
-            if (contacts.length === 0) {
-                DOM.contactResults.innerHTML = '<p class="no-results">لا توجد نتائج</p>';
-                return;
-            }
-            
-            contacts.forEach(contact => {
-                const contactEl = document.createElement('div');
-                contactEl.className = 'search-result-item';
-                contactEl.innerHTML = `
-                    <div class="search-result-avatar">${contact.avatar}</div>
-                    <div class="search-result-info">
-                        <div class="search-result-name">${contact.name}</div>
-                        <div class="search-result-desc">${contact.status}</div>
-                    </div>
-                `;
-                
-                contactEl.addEventListener('click', () => {
-                    ContactService.selectContact(contact);
-                    UI.hideSearch();
-                });
-                
-                DOM.contactResults.appendChild(contactEl);
-            });
-        },
-        
-        searchMessages: (query) => {
-            // في تطبيق حقيقي، هذا سيتطلب الاستعلام من Firebase
-            // هنا نعرض نتائج وهمية للتوضيح
-            DOM.messageResults.innerHTML = `
-                <div class="message-result">
-                    <div class="message-result-header">
-                        <span>محمد أحمد</span>
-                        <span>أمس 14:30</span>
-                    </div>
-                    <div class="message-result-content">
-                        هذه رسالة تحتوي على كلمة <span class="message-result-highlight">${query}</span> التي بحثت عنها
-                    </div>
-                </div>
-                <div class="message-result">
-                    <div class="message-result-header">
-                        <span>أنت</span>
-                        <span>أمس 14:32</span>
-                    </div>
-                    <div class="message-result-content">
-                        نعم، هذه أيضا تحتوي على <span class="message-result-highlight">${query}</span>
-                    </div>
-                </div>
-            `;
-            
-            DOM.mediaResults.innerHTML = '<p class="no-results">لا توجد وسائط</p>';
-        }
-    };
-    
-// ===== خدمة تسجيل الصوت المحسنة =====
-(() => {
-    const MAX_DURATION_SECONDS = 120; // حد أقصى للتسجيل
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let localStream = null;
-    let recordStart = 0;
-    let timerInterval = null;
-    const recBtn = document.getElementById('recordBtn');
-    const chatMessagesEl = document.getElementById('chatMessages');
 
-    if (!recBtn) {
-        console.warn("recordBtn غير موجود في DOM");
-        return;
-    }
-
-    // مؤقّت مرئي صغير بالزر
-    function startTimerUI() {
-        recordStart = Date.now();
-        let timerEl = recBtn.querySelector(".record-timer");
-        if (!timerEl) {
-            timerEl = document.createElement("span");
-            timerEl.className = "record-timer";
-            timerEl.style.fontSize = "0.85rem";
-            timerEl.style.marginInline = "8px";
-            timerEl.style.color = "#b71c1c";
-            recBtn.prepend(timerEl);
-        }
-        function update() {
-            const s = Math.floor((Date.now() - recordStart) / 1000);
-            timerEl.textContent = `${s}s`;
-            if (s >= MAX_DURATION_SECONDS) stopRecording();
-        }
-        timerInterval = setInterval(update, 500);
-        update();
+// ===== إضافة تنسيقات CSS اللازمة =====
+const profileImageStyles = `
+    .has-profile-image {
+        background-size: cover !important;
+        background-position: center !important;
     }
     
-    function stopTimerUI() {
-        const timerEl = recBtn.querySelector(".record-timer");
-        if (timerInterval) clearInterval(timerInterval);
-        if (timerEl) timerEl.remove();
+    .profile-avatar, .user-avatar {
+        transition: all 0.3s ease;
     }
-
-    // إضافة عرض مؤقت للرسالة قبل الرفع (optimistic)
-    function appendLocalAudio(url, durationSec, senderId = (AppState.currentUser && AppState.currentUser.uid) || "me") {
-        const wrapper = document.createElement("div");
-        wrapper.className = senderId === (AppState.currentUser && AppState.currentUser.uid) ? "message sent" : "message received";
-
-        const audio = document.createElement("audio");
-        audio.controls = true;
-        audio.src = url;
-        audio.style.maxWidth = "260px";
-        wrapper.appendChild(audio);
-
-        const meta = document.createElement("div");
-        meta.style.fontSize = "0.85rem";
-        meta.style.marginTop = "6px";
-        meta.style.opacity = "0.9";
-        meta.textContent = durationSec ? `مدة: ${durationSec}s` : "";
-        wrapper.appendChild(meta);
-
-        chatMessagesEl.appendChild(wrapper);
-        chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-        return wrapper;
+    
+    .loading-spinner {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 3px solid #25D366;
+        animation: spin 1s linear infinite;
+        z-index: 10;
     }
-
-    // رفع الملف إلى Firebase Storage (مع تقدم)
-    async function uploadVoiceFile(file, chatId) {
-    if (!AppState.currentUser) throw new Error("User not authenticated");
-    const userId = AppState.currentUser.uid;
-    const filename = `${Date.now()}_${file.name}`;
-    const path = `voiceMessages/${userId}/${chatId}/${filename}`;
-    const sRef = storageRef(storage, path);
-
-    // إذا كانت uploadBytesResumable متاحة — احتفظ بتتبع التقدّم
-    if (typeof uploadBytesResumable === 'function') {
-        const uploadTask = uploadBytesResumable(sRef, file, {
-            customMetadata: { uploader: userId, chatId }
-        });
-
-        return new Promise((resolve, reject) => {
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    // هنا يمكنك إرسال النسبة للشريط، مثال:
-                    // const pct = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                },
-                (err) => reject(err),
-                async () => {
-                    try {
-                        const url = await getDownloadURL(sRef);
-                        resolve({ url, path });
-                    } catch (e) { reject(e); }
-                }
-            );
-        });
+    
+    @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
+`;
 
-    // fallback آمن: إذا لم تتوفر uploadBytesResumable
-    const snapshot = await uploadBytes(sRef, file);
-    const url = await getDownloadURL(sRef);
-    return { url, path };
-}
-
-    // حفظ الميتاداتا في Firestore (رسالة)
-    async function saveVoiceMessageToFirestore(chatId, url, durationSec) {
-        const payload = {
-            type: "voice",
-            url,
-            duration: durationSec || null,
-            senderId: AppState.currentUser.uid,
-            timestamp: serverTimestamp()
-        };
-        const messagesRef = collection(db, "chats", chatId, "messages");
-        const docRef = await addDoc(messagesRef, payload);
-        return docRef.id;
-    }
-
-    // بدء التسجيل
-    async function startRecording() {
-        try {
-            // طلب إذن المايك
-            localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            audioChunks = [];
-            mediaRecorder = new MediaRecorder(localStream);
-
-            mediaRecorder.ondataavailable = (e) => {
-                if (e.data && e.data.size > 0) audioChunks.push(e.data);
-            };
-
-            mediaRecorder.onstop = async () => {
-                stopTimerUI();
-                recBtn.classList.remove("recording");
-
-                const durationSec = Math.round((Date.now() - recordStart) / 1000);
-                const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-                const audioFile = new File([audioBlob], `voice_${Date.now()}.webm`, { type: "audio/webm" });
-
-                // تحقق من وجود شات نشط
-                if (!AppState.currentUser || !AppState.currentChat) {
-                    // fallback: عرض محلي فقط
-                    const localUrl = URL.createObjectURL(audioBlob);
-                    appendLocalAudio(localUrl, durationSec);
-                    NotificationService.show('ملاحظة', 'لم يتم العثور على محادثة نشطة. تم العرض محليًا فقط.', 'warning');
-                    try { localStream.getTracks().forEach(t => t.stop()); } catch(e) {}
-                    return;
-                }
-
-                const chatId = [AppState.currentUser.uid, AppState.currentChat.id].sort().join('_');
-
-                // عرض محلي فوري أثناء الرفع
-                const optimisticUrl = URL.createObjectURL(audioBlob);
-                const tempNode = appendLocalAudio(optimisticUrl, durationSec);
-
-                try {
-                    NotificationService.show('جاري الرفع', 'سيتم إرسال الرسالة الصوتية الآن...', 'success', 2000);
-                    const { url } = await uploadVoiceFile(audioFile, chatId);
-                    await saveVoiceMessageToFirestore(chatId, url, durationSec);
-
-                    // استبدال الـ audio المحلي بالرابط النهائي (إن رغبت)
-                    tempNode.querySelector('audio').src = url;
-                } catch (err) {
-                    console.error("Upload error:", err);
-                    NotificationService.show('خطأ', 'تعذر رفع الملف الصوتي: ' + err.message, 'error', 6000);
-                    // يمكنك إزالة العنصر المؤقت أو تمييزه كفشل
-                    tempNode.style.opacity = "0.6";
-                } finally {
-                    try { localStream.getTracks().forEach(t => t.stop()); } catch(e) {}
-                }
-            };
-
-            mediaRecorder.start();
-            recordStart = Date.now();
-            startTimerUI();
-            recBtn.classList.add("recording");
-        } catch (err) {
-            console.error("getUserMedia error:", err);
-            NotificationService.show('خطأ', 'تعذّر الوصول إلى الميكروفون: ' + err.message, 'error', 6000);
-        }
-    }
-
-    // إيقاف التسجيل
-    async function stopRecording() {
-        try {
-            if (mediaRecorder && mediaRecorder.state === "recording") {
-                mediaRecorder.stop();
-            }
-        } catch (e) { console.error(e); }
-    }
-
-    // تبديل البدء/الإيقاف عند الضغط
-    recBtn.addEventListener("click", async () => {
-        if (!mediaRecorder || mediaRecorder.state === "inactive") {
-            await startRecording();
-        } else {
-            await stopRecording();
-        }
-    });
-
-    // دعم touch (للمحمول) — لمس طويل يبدأ التسجيل
-    let touchTimer = null;
-    recBtn.addEventListener("touchstart", (e) => {
-        touchTimer = setTimeout(() => { startRecording(); }, 200);
-    });
-    recBtn.addEventListener("touchend", () => {
-        clearTimeout(touchTimer);
-        if (mediaRecorder && mediaRecorder.state === "recording") stopRecording();
-    });
-
-})();
+// إضافة التنسيقات إلى الصفحة
+const styleSheet = document.createElement('style');
+styleSheet.textContent = profileImageStyles;
+document.head.appendChild(styleSheet);
 
     // ===== واجهة المستخدم =====
     const UI = {
@@ -4149,6 +4327,7 @@ profileImageInput.addEventListener('change', async (e) => {
         showApp: () => {
             DOM.authContainer.style.display = 'none';
             DOM.appContainer.style.display = 'block';
+            UI.showWelcomeScreen();
         },
 
         renderContacts: (contacts = null) => {
@@ -4200,11 +4379,9 @@ profileImageInput.addEventListener('change', async (e) => {
             DOM.currentContactAvatar.textContent = contact.avatar;
             DOM.currentContactStatus.textContent = contact.status;
             
-            DOM.welcomeScreen.style.display = 'none';
-            document.querySelector('.chat-area').style.display = 'flex';
-            DOM.chatHeader.style.display = 'flex';
-            DOM.chatInputContainer.style.display = 'flex';
-            DOM.securityIndicator.style.display = 'flex';
+            // إخفاء شاشة الترحيب وإظهار المحادثة
+            DOM.welcomeScreen.classList.add('hidden');
+            DOM.chatContent.classList.remove('hidden');
             
             ChatService.loadChat(contact.id);
             
@@ -4222,7 +4399,7 @@ profileImageInput.addEventListener('change', async (e) => {
             }
         },
 
-   renderMessage: (message) => {
+           renderMessage: (message) => {
     const time = message.timestamp 
         ? new Date(message.timestamp.seconds * 1000).toLocaleTimeString('ar-EG', { hour:'2-digit', minute:'2-digit' }) 
         : 'الآن';
@@ -4244,18 +4421,36 @@ profileImageInput.addEventListener('change', async (e) => {
             </div>
             <div class="message-time">${time}</div>
         `;
-    } else if (message.type === 'audio') {
-        const audioEl = document.createElement('audio');
-        audioEl.controls = true;
-        audioEl.src = message.audioUrl;
-        audioEl.style.maxWidth = '220px';
-        const wrapper = document.createElement('div');
-        wrapper.appendChild(audioEl);
-        const timeDiv = document.createElement('div');
-        timeDiv.className = 'message-time';
-        timeDiv.textContent = time;
-        msgEl.appendChild(wrapper);
-        msgEl.appendChild(timeDiv);
+   } else if (message.type === 'audio') {
+    const audioContainer = document.createElement('div');
+    audioContainer.className = 'message-audio';
+    
+    const audioEl = document.createElement('audio');
+    audioEl.controls = true;
+    audioEl.src = message.audioUrl;
+    audioEl.style.maxWidth = '220px';
+    
+    const durationDiv = document.createElement('div');
+    durationDiv.className = 'audio-duration';
+    durationDiv.textContent = `${message.duration || '0'} ثانية`;
+    
+    audioContainer.appendChild(audioEl);
+    audioContainer.appendChild(durationDiv);
+    
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = time;
+    
+    msgEl.appendChild(audioContainer);
+    msgEl.appendChild(timeDiv);
+    
+    if (sender === 'me') {
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'message-status';
+        statusDiv.innerHTML = '<i class="fas fa-check-double"></i>';
+        msgEl.appendChild(statusDiv);
+    }
+
     } else if (message.type === 'image') {
         msgEl.innerHTML = `
             <div class="message-media">
@@ -4300,6 +4495,7 @@ profileImageInput.addEventListener('change', async (e) => {
     DOM.chatMessages.appendChild(msgEl);
     UI.scrollToBottom();
 },
+
         clearChat: () => {
             DOM.chatMessages.innerHTML = '';
         },
@@ -4318,17 +4514,15 @@ profileImageInput.addEventListener('change', async (e) => {
         },
 
         showWelcomeScreen: () => {
-            DOM.welcomeScreen.style.display = 'flex';
-            DOM.chatHeader.style.display = 'none';
-            DOM.chatInputContainer.style.display = 'none';
-            DOM.securityIndicator.style.display = 'none';
+            DOM.welcomeScreen.classList.remove('hidden');
+            DOM.chatContent.classList.add('hidden');
             AppState.currentChat = null;
             
             document.querySelectorAll('.contact').forEach(c => {
                 c.classList.remove('active');
             });
         },
-
+     
         showUserProfile: (userId) => {
             const user = AppState.contacts.find(c => c.id === userId);
             if (user) {
@@ -4499,6 +4693,255 @@ function openMediaViewer(url, type) {
     });
 }
 
+// ===== خدمة تسجيل الصوت المحسنة =====
+const AudioService = {
+    mediaRecorder: null,
+    audioChunks: [],
+    audioBlob: null,
+    isRecording: false,
+    recordingTimer: null,
+    recordingStartTime: null,
+
+    // بدء التسجيل
+    startRecording: async function() {
+        try {
+            console.log('بدء التسجيل...');
+            
+            // إيقاف أي تسجيل سابق إن وجد
+            if (this.isRecording) {
+                this.stopRecording();
+                return;
+            }
+            
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                audio: {
+                    channelCount: 1,
+                    sampleRate: 44100,
+                    sampleSize: 16
+                } 
+            });
+            
+            this.audioChunks = [];
+            this.mediaRecorder = new MediaRecorder(stream, {
+                mimeType: 'audio/webm;codecs=opus'
+            });
+
+            this.mediaRecorder.ondataavailable = (event) => {
+                console.log('تم استقبال بيانات صوتية', event.data.size);
+                if (event.data.size > 0) {
+                    this.audioChunks.push(event.data);
+                }
+            };
+
+            this.mediaRecorder.onstop = async () => {
+                console.log('تم إيقاف التسجيل، عدد القطع:', this.audioChunks.length);
+                this.audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+                console.log('حجم التسجيل:', this.audioBlob.size);
+                
+                if (this.audioBlob.size > 0) {
+                    await this.finishRecording();
+                } else {
+                    NotificationService.show('خطأ', 'لم يتم تسجيل أي صوت', 'error');
+                }
+                
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            this.mediaRecorder.start(1000); // تجزئة التسجيل إلى قطع كل ثانية
+            this.isRecording = true;
+            this.recordingStartTime = Date.now();
+            this.startRecordingTimer();
+            
+            DOM.recordBtn.classList.add('recording');
+            DOM.recordBtn.innerHTML = '<i class="fas fa-stop-circle"></i>';
+            DOM.recordBtn.title = 'إيقاف التسجيل';
+            
+        } catch (error) {
+            console.error('Error starting recording:', error);
+            NotificationService.show('خطأ', 'تعذر الوصول إلى الميكروفون: ' + error.message, 'error');
+        }
+    },
+
+    // إيقاف التسجيل
+    stopRecording: function() {
+        if (this.mediaRecorder && this.isRecording) {
+            console.log('إيقاف التسجيل...');
+            this.mediaRecorder.stop();
+            this.isRecording = false;
+            this.stopRecordingTimer();
+            
+            DOM.recordBtn.classList.remove('recording');
+            DOM.recordBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            DOM.recordBtn.title = 'بدء التسجيل';
+        }
+    },
+
+    // بدء مؤقت التسجيل
+    startRecordingTimer: function() {
+        this.stopRecordingTimer(); // تنظيف أي مؤقت سابق
+        
+        const timerElement = document.createElement('div');
+        timerElement.id = 'recordingTimer';
+        timerElement.className = 'record-timer';
+        timerElement.style.cssText = `
+            position: absolute;
+            bottom: 60px;
+            right: 10px;
+            background: var(--error);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            z-index: 1000;
+        `;
+        
+        document.body.appendChild(timerElement);
+        
+        this.recordingTimer = setInterval(() => {
+            const elapsedTime = Math.floor((Date.now() - this.recordingStartTime) / 1000);
+            const minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
+            const seconds = (elapsedTime % 60).toString().padStart(2, '0');
+            timerElement.textContent = `${minutes}:${seconds}`;
+        }, 1000);
+    },
+
+    // إيقاف مؤقت التسجيل
+    stopRecordingTimer: function() {
+        if (this.recordingTimer) {
+            clearInterval(this.recordingTimer);
+            this.recordingTimer = null;
+        }
+        
+        const timerElement = document.getElementById('recordingTimer');
+        if (timerElement) {
+            timerElement.remove();
+        }
+    },
+
+    // معالجة التسجيل بعد الانتهاء
+    finishRecording: async function() {
+        try {
+            const audioURL = URL.createObjectURL(this.audioBlob);
+            this.showAudioPreview(audioURL);
+        } catch (error) {
+            console.error('Error processing recording:', error);
+            NotificationService.show('خطأ', 'فشل في معالجة التسجيل: ' + error.message, 'error');
+        }
+    },
+
+    // عرض معاينة التسجيل
+    showAudioPreview: function(audioURL) {
+        // إزالة أي معاينة سابقة
+        document.querySelectorAll('.audio-preview').forEach(el => el.remove());
+        
+        const previewContainer = document.createElement('div');
+        previewContainer.className = 'audio-preview';
+        previewContainer.style.cssText = `
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--light-gray);
+            border-radius: 20px;
+            margin: 10px 0;
+        `;
+        
+        const audioElement = document.createElement('audio');
+        audioElement.controls = true;
+        audioElement.src = audioURL;
+        audioElement.style.maxWidth = '200px';
+        
+        const sendButton = document.createElement('button');
+        sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        sendButton.className = 'chat-send';
+        sendButton.onclick = () => this.sendRecording(this.audioBlob);
+        
+        const cancelButton = document.createElement('button');
+        cancelButton.innerHTML = '<i class="fas fa-times"></i>';
+        cancelButton.className = 'chat-input-action';
+        cancelButton.onclick = () => {
+            previewContainer.remove();
+            this.audioBlob = null;
+        };
+        
+        previewContainer.appendChild(audioElement);
+        previewContainer.appendChild(sendButton);
+        previewContainer.appendChild(cancelButton);
+        
+        DOM.chatInputContainer.before(previewContainer);
+    },
+
+    // إرسال التسجيل
+    sendRecording: async function(audioBlob) {
+        if (!AppState.currentChat || !AppState.currentUser) {
+            NotificationService.show('خطأ', 'يرجى تحديد محادثة أولاً', 'error');
+            return;
+        }
+
+        try {
+            NotificationService.show('جاري الإرسال', 'جاري تحميل التسجيل الصوتي...', 'info');
+            
+            const chatId = [AppState.currentUser.uid, AppState.currentChat.id].sort().join('_');
+            const fileName = `voice_message_${Date.now()}.webm`;
+            const fileRef = storageRef(storage, `chats/${chatId}/${fileName}`);
+            
+            // رفع الملف إلى التخزين
+            const snapshot = await uploadBytes(fileRef, audioBlob);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            
+            // حساب مدة التسجيل
+            const duration = await this.calculateAudioDuration(audioBlob);
+            
+            // حفظ الرسالة في قاعدة البيانات
+            await addDoc(collection(db, 'chats', chatId, 'messages'), {
+                type: 'audio',
+                audioUrl: downloadURL,
+                duration: duration,
+                senderId: AppState.currentUser.uid,
+                timestamp: serverTimestamp(),
+                fileName: fileName
+            });
+            
+            // تحديث واجهة المستخدم
+            document.querySelector('.audio-preview')?.remove();
+            NotificationService.show('تم الإرسال', 'تم إرسال التسجيل الصوتي بنجاح', 'success');
+            
+        } catch (error) {
+            console.error('Error sending recording:', error);
+            NotificationService.show('خطأ', 'فشل في إرسال التسجيل: ' + error.message, 'error');
+        }
+    },
+
+    // حساب مدة التسجيل
+    calculateAudioDuration: function(audioBlob) {
+        return new Promise((resolve) => {
+            const audio = new Audio();
+            audio.src = URL.createObjectURL(audioBlob);
+            
+            audio.onloadedmetadata = () => {
+                resolve(Math.round(audio.duration));
+                URL.revokeObjectURL(audio.src);
+            };
+            
+            audio.onerror = () => {
+                resolve(0); // في حالة الخطأ، عودة بقيمة افتراضية
+            };
+            
+            //设定超时以防万一
+            setTimeout(() => resolve(0), 5000);
+        });
+    }
+};
+
+// إضافة معالج الأحداث لزر التسجيل
+DOM.recordBtn.addEventListener('click', function() {
+    if (AudioService.isRecording) {
+        AudioService.stopRecording();
+    } else {
+        AudioService.startRecording();
+    }
+});
+    
     // ===== إعداد معالجات الأحداث =====
     const setupEventListeners = () => {
         // أحداث المصادقة
